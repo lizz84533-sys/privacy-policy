@@ -1,0 +1,3524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Boss — Your business, kept in order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet-deep:#4c1d95;
+    --violet:#6d28d9;
+    --violet-blue:#5b3ee0;
+    --teal:#0d9488;
+    --blue:#3b5bdb;
+    --blue-light:#6a8dff;
+    --bg:#f5f5fb;
+    --card:#ffffff;
+    --text:#1e1b2e;
+    --text-muted:#6b6580;
+    --border:#e7e4f5;
+    --success:#16a766;
+    --shadow: 0 4px 20px rgba(76,29,149,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+  }
+  header.hero{
+    background: linear-gradient(135deg, var(--violet-deep) 0%, var(--violet-blue) 50%, var(--blue) 100%);
+    color:white;
+    padding:28px 20px 26px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    top:-70px;right:-70px;
+    width:160px;height:160px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  .wordmark{
+    font-family:'Alex Brush', cursive;
+    font-size:44px;
+    line-height:1;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .wordmark .tag{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:0.4px;
+    opacity:0.85;
+    text-transform:none;
+  }
+  .stats-row{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+  }
+  .stat-card{
+    flex:1;
+    background:rgba(255,255,255,0.14);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:14px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat-card .label{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    opacity:0.8;
+    font-weight:600;
+  }
+  .stat-card .value{
+    font-size:22px;
+    font-weight:800;
+    margin-top:4px;
+  }
+
+  main{padding:20px 16px 0;}
+
+  .panel{
+    background:var(--card);
+    border-radius:18px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .panel h2{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .empty-state{
+    color:var(--text-muted);
+    font-size:14px;
+    text-align:center;
+    padding:24px 10px;
+  }
+
+  button.primary{
+    width:100%;
+    background:linear-gradient(135deg, var(--violet) 0%, var(--blue) 100%);
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  button.primary:active{opacity:0.85;}
+
+  input, select, textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:11px 12px;
+    font-size:14px;
+    font-family:inherit;
+    margin-bottom:10px;
+    background:#fbfaff;
+    color:var(--text);
+  }
+  label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-muted);
+    display:block;
+    margin-bottom:5px;
+  }
+
+  .list-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .list-item:last-child{border-bottom:none;}
+  .list-item .meta{font-size:12px;color:var(--text-muted);}
+  .list-item .amt{font-weight:700;color:var(--violet-blue);}
+
+  .connect-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#fbfaff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    margin-bottom:10px;
+    text-align:left;
+  }
+  .connect-btn:last-child{margin-bottom:0;}
+  .connect-btn .connect-icon{font-size:20px;}
+  .connect-btn span:nth-child(2){flex:1;}
+  .connect-btn .connect-status{
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-muted);
+    background:var(--border);
+    padding:4px 9px;
+    border-radius:20px;
+  }
+  .connect-btn .connect-status.connected{
+    color:white;
+    background:var(--success);
+  }
+  .connect-btn.gmail:active, .connect-btn.outlook:active{opacity:0.8;}
+
+  .irs-link{
+    display:block;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-bottom:10px;
+    text-decoration:none;
+    color:var(--text);
+    font-size:14px;
+    font-weight:600;
+    background:#fbfaff;
+  }
+  .irs-link .desc{
+    font-weight:400;
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:3px;
+  }
+
+  nav.tabbar{
+    position:sticky;
+    top:0;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:8px 6px;
+    box-shadow:0 4px 20px rgba(76,29,149,0.06);
+    z-index:50;
+    scrollbar-width:none;
+  }
+  nav.tabbar::-webkit-scrollbar{display:none;}
+  nav.tabbar button{
+    flex:0 0 auto;
+    min-width:72px;
+    background:none;
+    border:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    padding:8px 10px;
+    font-size:10px;
+    font-weight:600;
+    color:var(--text-muted);
+    cursor:pointer;
+    border-radius:12px;
+  }
+  nav.tabbar button .icon{font-size:19px;}
+  nav.tabbar button.active{color:var(--violet-blue);background:#f1eefd;}
+  nav.tabbar button .icon-wrap{position:relative;display:flex;}
+  nav.tabbar button .connect-dot{
+    position:absolute;
+    top:-2px;right:-2px;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--success);
+    border:2px solid white;
+    display:none;
+  }
+
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+
+  .badge{
+    display:inline-block;
+    background:var(--success);
+    color:white;
+    font-size:10px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:20px;
+  }
+
+  .event-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:4px 18px;
+  }
+  .event-card{
+    display:flex;
+    gap:10px;
+    padding:12px 10px;
+    margin:0 -10px;
+    border-bottom:1px solid var(--border);
+    border-radius:8px;
+    transition:background 0.12s ease;
+  }
+  .event-card.clickable{cursor:pointer;}
+  .event-card.clickable:hover,
+  .event-card.clickable:active{
+    background:#f5f3ff;
+  }
+  .event-card .event-date{
+    font-weight:700;
+    font-size:13px;
+    white-space:nowrap;
+    flex-shrink:0;
+    padding-top:1px;
+    min-width:52px;
+  }
+  .event-card .event-body{flex:1;min-width:0;overflow-wrap:break-word;word-break:break-word;}
+  .folder-tab{
+    width:auto;padding:7px 14px;font-size:13px;font-weight:600;border-radius:20px;
+    border:1px solid var(--border);background:#fff;color:var(--text-muted);cursor:pointer;
+    white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;
+  }
+  .folder-tab.active{
+    background:var(--violet);color:#fff;border-color:var(--violet);
+  }
+  .provider-tab{
+    width:auto;padding:7px 14px;font-size:13px;font-weight:600;border-radius:8px;
+    border:none;background:transparent;color:var(--text-muted);cursor:pointer;
+    white-space:nowrap;flex-shrink:0;border-bottom:2px solid transparent;
+  }
+  .provider-tab.active{
+    color:var(--violet);border-bottom:2px solid var(--violet);
+  }
+  .provider-tab.active[data-provider="gmail"]{
+    color:#34a853;border-bottom:2px solid #34a853;
+  }
+  .provider-tab.active[data-provider="outlook"]{
+    color:#3b5bdb;border-bottom:2px solid #3b5bdb;
+  }
+  .email-two-pane{display:flex;border-top:1px solid var(--border);min-height:420px;}
+  .email-list-pane{width:300px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;max-height:70vh;}
+  .email-reading-pane{flex:1;overflow-y:auto;max-height:70vh;padding:20px;min-width:0;}
+  @media (max-width:780px){
+    .email-two-pane{flex-direction:column;}
+    .email-list-pane{width:100%;border-right:none;border-bottom:1px solid var(--border);max-height:44vh;}
+    .email-reading-pane{max-height:44vh;}
+  }
+  .email-list-row{padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;gap:10px;align-items:flex-start;}
+  .email-list-row:hover{background:#faf9ff;}
+  .email-list-row.selected{background:#f0edff;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2/lib/msal-browser.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div id="authScreen" style="position:fixed;inset:0;background:linear-gradient(135deg, var(--violet-deep) 0%, var(--violet-blue) 50%, var(--blue) 100%);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:20px;padding:28px 22px;width:100%;max-width:360px;box-shadow:var(--shadow);">
+    <div class="wordmark" style="color:var(--violet-blue);justify-content:center;margin-bottom:4px;">Boss</div>
+    <p style="text-align:center;color:var(--text-muted);font-size:13px;margin-bottom:20px;">Sign in to save your data</p>
+    <label>Name <span style="font-weight:400;color:var(--text-muted);">(shown instead of your email — only needed when creating an account)</span></label>
+    <input type="text" id="authName" placeholder="Your name">
+    <label>Email</label>
+    <input type="email" id="authEmail" placeholder="you@email.com">
+    <label>Password</label>
+    <input type="password" id="authPassword" placeholder="••••••••">
+    <button class="primary" onclick="signIn()">Log In</button>
+    <button class="primary" style="background:#fbfaff;color:var(--violet-blue);border:1px solid var(--border);margin-top:8px;" onclick="signUp()">Create Account</button>
+    <p id="authError" style="color:#dc2626;font-size:12px;text-align:center;margin-top:10px;"></p>
+  </div>
+</div>
+
+<div id="logoutConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:18px;padding:24px 20px;width:100%;max-width:320px;box-shadow:var(--shadow);text-align:center;">
+    <p style="font-size:15px;font-weight:700;margin-bottom:18px;">Log out of Boss?</p>
+    <button class="primary" style="background:#dc2626;" onclick="confirmSignOutBoss()">Log Out</button>
+    <button class="primary" style="background:#fbfaff;color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="closeLogoutConfirmModal()">Cancel</button>
+  </div>
+</div>
+
+<div id="editNameModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:18px;padding:24px 20px;width:100%;max-width:320px;box-shadow:var(--shadow);">
+    <p style="font-size:15px;font-weight:700;margin-bottom:14px;">Your display name</p>
+    <input type="text" id="editNameInput" placeholder="Your name">
+    <button class="primary" onclick="saveDisplayName()">Save</button>
+    <button class="primary" style="background:#fbfaff;color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="closeEditNameModal()">Cancel</button>
+  </div>
+</div>
+
+<div id="disclaimerModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:18px;padding:24px 20px;width:100%;max-width:340px;box-shadow:var(--shadow);">
+    <p style="font-size:15px;font-weight:700;margin-bottom:12px;">Before you get started</p>
+    <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:18px;">Boss is a tracking and organization tool. It does not provide tax, legal, or financial advice, and any deduction estimates shown in the app are for reference only. Always consult a qualified tax professional regarding your specific situation.</p>
+    <button class="primary" onclick="acknowledgeDisclaimer()">I Understand</button>
+  </div>
+</div>
+
+<header class="hero" id="mainHeader" style="display:none;">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+    <div class="wordmark">Boss <span class="tag">· Your business, kept in order</span></div>
+    <div id="pinnedNoteSlot" onclick="openPinnedNoteModal()" style="display:none;flex-shrink:0;width:52px;height:52px;border-radius:8px;overflow:hidden;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.25);align-items:center;justify-content:center;padding:5px;box-sizing:border-box;font-size:9px;line-height:1.15;color:#3a3a3a;text-align:center;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;">
+    </div>
+    <div id="profilePicWrap" onclick="document.getElementById('profilePicInput').click()" title="Add a profile picture" style="flex-shrink:0;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.16);border:2px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;">
+      <img id="profilePicImg" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
+      <span id="profilePicIcon" style="font-size:18px;">📷</span>
+    </div>
+    <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="handleProfilePicUpload(event)">
+  </div>
+  <div id="loggedInAsRow" style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11.5px;opacity:0.9;">
+    <span style="display:flex;align-items:center;gap:6px;">
+      <span id="loggedInAsText"></span>
+      <button type="button" onclick="openEditNameModal()" title="Edit name" style="background:none;border:none;color:#fff;opacity:0.8;font-size:12px;cursor:pointer;padding:2px 4px;">✏️</button>
+    </span>
+    <button type="button" onclick="openLogoutConfirmModal()" style="background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">Log Out</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="label">Miles this month</div>
+      <div class="value" id="statMiles">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Deduction</div>
+      <div class="value" id="statDeduction">$0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Receipts</div>
+      <div class="value" id="statReceipts">0</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabbar" id="mainNav" style="display:none;">
+  <button class="active" data-tab="mileage" onclick="switchTab('mileage')"><span class="icon">🚗</span>Mileage</button>
+  <button data-tab="receipts" onclick="switchTab('receipts')"><span class="icon">🧾</span>Receipts</button>
+  <button data-tab="dashboard" onclick="switchTab('dashboard')"><span class="icon">📊</span>Dashboard</button>
+  <button data-tab="calendar" onclick="switchTab('calendar')"><span class="icon">📅</span>Calendar</button>
+  <button data-tab="reminders" onclick="switchTab('reminders')"><span class="icon">⏰</span>Reminders</button>
+  <button data-tab="irs" onclick="switchTab('irs')"><span class="icon">🏛️</span>IRS</button>
+  <button data-tab="email" onclick="switchTab('email')"><span class="icon">📥</span>Email</button>
+  <button id="navGmailBtn" onclick="connectGmailInbox()" type="button"><span class="icon-wrap"><span class="icon" id="navGmailIcon">📧</span><span class="connect-dot" id="navGmailDot"></span></span>Gmail</button>
+  <button id="navOutlookEmailBtn" onclick="connectOutlookInbox()" type="button"><span class="icon-wrap"><span class="icon" id="navOutlookEmailIcon">📧</span><span class="connect-dot" id="navOutlookEmailDot"></span></span>Outlook Email</button>
+  <button data-tab="perks" onclick="switchTab('perks')"><span class="icon">⭐</span>Perks</button>
+  <button data-tab="notes" onclick="switchTab('notes')"><span class="icon" style="display:inline-block;width:15px;height:15px;background:#FFF3A3;border:1px solid rgba(0,0,0,0.15);border-radius:2px;box-shadow:1px 1px 2px rgba(0,0,0,0.2);vertical-align:middle;"></span>Notes</button>
+</nav>
+
+<main id="mainContent" style="display:none;">
+
+  <!-- MILEAGE -->
+  <section id="tab-mileage" class="tab-content active">
+    <div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2>📍 GPS Trip Tracker</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Track your drive automatically using your phone's location. Keep this tab open and on-screen the whole trip — switching apps pauses tracking.</p>
+      <div id="gpsStatus" style="font-size:13px;font-weight:600;color:var(--violet-blue);margin-bottom:10px;"></div>
+      <div id="gpsAccuracyNote" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;"></div>
+      <button class="primary" id="gpsStartBtn" onclick="startGpsTrip()">Start GPS Trip</button>
+      <button class="primary" id="gpsStopBtn" style="display:none;background:#dc2626;" onclick="stopGpsTrip()">End GPS Trip</button>
+    </div>
+    <div class="panel">
+      <h2>🚗 Log a Trip</h2>
+      <label>Trip Type</label>
+      <select id="tripType" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);font-size:14px;margin-bottom:12px;">
+        <option value="business">Business (70¢/mile)</option>
+        <option value="nonprofit">Nonprofit / Volunteer (14¢/mile)</option>
+      </select>
+      <label>Date</label>
+      <input type="date" id="tripDate">
+      <label>Purpose</label>
+      <input type="text" id="tripPurpose" placeholder="e.g. Client meeting, supply run">
+      <label>Miles Driven</label>
+      <input type="number" id="tripMiles" placeholder="0.0" step="0.1">
+      <button class="primary" onclick="addTrip()">Save Trip</button>
+    </div>
+<div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2 style="color:var(--violet);">Trip Log</h2>
+      <div id="tripList"><div class="empty-state">No trips logged yet. Add your first trip above.</div></div>
+    </div>
+    <div class="panel">
+      <h2 style="color:var(--violet);">IRS Mileage Rates</h2>
+      <p style="font-size:13px;color:var(--text-muted);">Business: <strong>$0.70/mile</strong> · Nonprofit/Volunteer: <strong>$0.14/mile</strong> (2025 IRS rates). Deductions are calculated automatically based on each trip's type.</p>
+    </div>
+  </section>
+
+  <!-- RECEIPTS -->
+  <section id="tab-receipts" class="tab-content">
+    <div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2>🧾 Add a Receipt</h2>
+      <label>Date</label>
+      <input type="date" id="receiptDate">
+      <label>Vendor</label>
+      <input type="text" id="receiptVendor" placeholder="e.g. Office Depot">
+      <label>Category</label>
+      <select id="receiptCategory">
+        <option>Supplies</option>
+        <option>Fuel</option>
+        <option>Meals</option>
+        <option>Software/Subscriptions</option>
+        <option>Equipment</option>
+        <option>Other</option>
+      </select>
+      <label>Amount</label>
+      <input type="number" id="receiptAmount" placeholder="0.00" step="0.01">
+      <button class="primary" onclick="addReceipt()">Save Receipt</button>
+    </div>
+<div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2>Receipt Log</h2>
+      <div style="display:grid;grid-template-columns:0.8fr 1.6fr;gap:10px;padding:0 16px 8px;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.03em;">
+        <div>Date</div><div>Supply Name &amp; Amount</div>
+      </div>
+      <div id="receiptList"><div class="empty-state">No receipts logged yet. Add your first receipt above.</div></div>
+    </div>
+  </section>
+
+  <div id="editReceiptModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:950;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeEditReceiptModal()">
+    <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:700;font-size:15px;">Edit Receipt</div>
+        <button type="button" onclick="closeEditReceiptModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+      </div>
+      <input type="hidden" id="editReceiptId">
+      <label>Date</label>
+      <input type="date" id="editReceiptDate">
+      <label>Vendor</label>
+      <input type="text" id="editReceiptVendor">
+      <label>Category</label>
+      <select id="editReceiptCategory">
+        <option>Supplies</option>
+        <option>Fuel</option>
+        <option>Meals</option>
+        <option>Software/Subscriptions</option>
+        <option>Equipment</option>
+        <option>Other</option>
+      </select>
+      <label>Amount</label>
+      <input type="number" id="editReceiptAmount" step="0.01">
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="primary" style="flex:1;" onclick="saveReceiptEdit()">Save Changes</button>
+        <button type="button" style="flex:0 0 auto;padding:0 16px;border-radius:10px;border:1px solid #f3d5d5;background:#fff;color:#c0392b;font-weight:600;cursor:pointer;" onclick="deleteReceiptFromEditModal()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="editTripModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:950;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeEditTripModal()">
+    <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:700;font-size:15px;">Edit Trip</div>
+        <button type="button" onclick="closeEditTripModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+      </div>
+      <input type="hidden" id="editTripId">
+      <label>Trip Type</label>
+      <select id="editTripType" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);font-size:14px;margin-bottom:12px;">
+        <option value="business">Business (70¢/mile)</option>
+        <option value="nonprofit">Nonprofit / Volunteer (14¢/mile)</option>
+      </select>
+      <label>Date</label>
+      <input type="date" id="editTripDate">
+      <label>Purpose</label>
+      <input type="text" id="editTripPurpose">
+      <label>Miles</label>
+      <input type="number" id="editTripMiles" step="0.01">
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="primary" style="flex:1;" onclick="saveTripEdit()">Save Changes</button>
+        <button type="button" style="flex:0 0 auto;padding:0 16px;border-radius:10px;border:1px solid #f3d5d5;background:#fff;color:#c0392b;font-weight:600;cursor:pointer;" onclick="deleteTripFromEditModal()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <section id="tab-email" class="tab-content">
+    <div class="panel" style="padding:0;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border);background:#fbfaff;">
+        <h2 style="margin:0;">📥 Inbox</h2>
+        <button type="button" class="primary" style="width:auto;padding:9px 18px;font-size:13px;" onclick="openComposeModal()">✏️ Compose</button>
+      </div>
+      <div style="display:flex;gap:6px;padding:10px 14px 0;overflow-x:auto;background:#fff;" id="emailProviderTabs">
+        <button type="button" class="provider-tab active" data-provider="all" onclick="switchEmailProvider('all')">All Accounts</button>
+        <button type="button" class="provider-tab" data-provider="gmail" onclick="switchEmailProvider('gmail')">📧 Gmail</button>
+        <button type="button" class="provider-tab" data-provider="outlook" onclick="switchEmailProvider('outlook')">📨 Outlook</button>
+      </div>
+      <div style="padding:10px 14px 0;background:#fff;position:relative;">
+        <span style="position:absolute;left:26px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text-muted);pointer-events:none;">🔍</span>
+        <input type="text" id="emailSearchInput" placeholder="Search mail by subject, sender, or content" oninput="handleEmailSearchInput(this.value)" style="width:100%;padding:9px 34px 9px 32px;border:1px solid var(--border);border-radius:10px;font-size:13.5px;font-family:inherit;">
+        <button type="button" id="emailSearchClearBtn" onclick="clearEmailSearch()" style="display:none;position:absolute;right:22px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:14px;color:var(--text-muted);cursor:pointer;padding:2px 6px;">✕</button>
+      </div>
+      <div style="display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);overflow-x:auto;background:#fff;" id="emailFolderTabs">
+        <button type="button" class="folder-tab active" data-folder="inbox" onclick="switchEmailFolder('inbox')">📥 Inbox</button>
+        <button type="button" class="folder-tab" data-folder="sent" onclick="switchEmailFolder('sent')">📤 Sent</button>
+        <button type="button" class="folder-tab" data-folder="drafts" onclick="switchEmailFolder('drafts')">📝 Drafts</button>
+        <button type="button" class="folder-tab" data-folder="trash" onclick="switchEmailFolder('trash')">🗑️ Trash</button>
+      </div>
+      <div style="display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);overflow-x:auto;background:#fff;" id="emailFilterTabs">
+        <button type="button" class="folder-tab" data-filter="unread" onclick="toggleEmailFilter('unread')">✉️ Unread</button>
+        <button type="button" class="folder-tab" data-filter="flagged" onclick="toggleEmailFilter('flagged')">🚩 Flagged</button>
+        <button type="button" class="folder-tab" data-filter="attachments" onclick="toggleEmailFilter('attachments')">📎 Has Files</button>
+      </div>
+      <div class="email-two-pane" id="emailTwoPane">
+        <div class="email-list-pane" id="emailListPane"><div class="empty-state" style="padding:24px 18px;">No inbox connected yet. Tap the Gmail or Outlook Email icon in the top nav to connect.</div></div>
+        <div class="email-reading-pane" id="emailReadingPane"><div class="empty-state" style="padding:40px 20px;">Select a message on the left to read it here.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="emailModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:950;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeEmailModal()">
+    <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div id="emailModalTitle" style="font-weight:700;font-size:15px;">New Email</div>
+        <button type="button" onclick="closeEmailModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+      </div>
+      <div id="emailModalProviderRow" style="margin-bottom:10px;">
+        <label>Send From</label>
+        <select id="emailProvider">
+          <option value="gmail">Gmail</option>
+          <option value="outlook">Outlook</option>
+        </select>
+      </div>
+      <label>To</label>
+      <input type="email" id="emailTo" placeholder="recipient@email.com">
+      <label>Subject</label>
+      <input type="text" id="emailSubject" placeholder="Subject">
+      <label>Message</label>
+      <textarea id="emailBody" rows="8" placeholder="Write your message..." style="width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;"></textarea>
+      <label>Attach a File (receipt, invoice, etc.)</label>
+      <input type="file" id="emailAttachment" multiple onchange="previewEmailAttachments()" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:10px;font-size:13px;">
+      <div id="emailAttachmentList" style="font-size:12px;color:var(--text-muted);margin-top:4px;"></div>
+      <div id="emailModalError" style="color:#c0392b;font-size:13px;margin-top:6px;"></div>
+      <button class="primary" style="margin-top:14px;" onclick="sendEmailFromModal()" id="emailSendBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard" class="tab-content">
+    <div class="panel">
+      <h2>📊 Overview</h2>
+      <p style="font-size:13px;color:var(--text-muted);">Your business snapshot for this month — mileage, deductions, and receipts logged all in one place.</p>
+    </div>
+    <div class="panel">
+      <h2>🧮 Tax Summary Export</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Get a clean summary of your mileage and receipts, ready to hand off to your tax preparer.</p>
+      <label>From</label>
+      <input type="date" id="taxFromDate">
+      <label>To</label>
+      <input type="date" id="taxToDate">
+      <button class="primary" onclick="generateTaxSummary()">Generate Summary</button>
+      <div id="taxSummaryOutput" style="margin-top:16px;"></div>
+    </div>
+    <div class="panel">
+      <h2>Quick Actions</h2>
+      <div class="list-item" style="cursor:pointer;" onclick="switchTab('mileage')"><span>🚗 Log a trip</span><span class="meta" style="color:var(--teal);font-weight:600;">Mileage tab ›</span></div>
+      <div class="list-item" style="cursor:pointer;" onclick="switchTab('receipts')"><span>🧾 Add a receipt</span><span class="meta" style="color:var(--teal);font-weight:600;">Receipts tab ›</span></div>
+      <div class="list-item" style="cursor:pointer;" onclick="switchTab('reminders')"><span>⏰ Set a reminder</span><span class="meta" style="color:var(--teal);font-weight:600;">Reminders tab ›</span></div>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section id="tab-calendar" class="tab-content">
+    <div class="panel">
+      <h2>📅 Add an Event</h2>
+      <label>Title</label>
+      <input type="text" id="eventTitle" placeholder="e.g. Client call, tax deadline">
+      <label>Date</label>
+      <input type="date" id="eventDate">
+      <label>Notes (optional)</label>
+      <input type="text" id="eventNotes" placeholder="Any extra details">
+      <div style="display:flex;gap:16px;margin:10px 0;">
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13.5px;color:var(--text);"><input type="checkbox" id="eventSyncGoogle" checked style="width:auto;"> 🟢 Sync to Google</label>
+        <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13.5px;color:var(--text);"><input type="checkbox" id="eventSyncOutlook" checked style="width:auto;"> 🔵 Sync to Outlook</label>
+      </div>
+      <button class="primary" onclick="addEvent()">Save Event</button>
+    </div>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h2 style="margin:0;">📆 Calendar</h2>
+        <div>
+          <button type="button" onclick="changeCalendarMonth(-1)" style="padding:6px 12px;">‹</button>
+          <span id="calendarMonthLabel" style="font-weight:600;margin:0 8px;"></span>
+          <button type="button" onclick="changeCalendarMonth(1)" style="padding:6px 12px;">›</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;font-size:11px;color:var(--text-muted);margin-bottom:10px;">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:#3b5bdb;margin-right:4px;"></span>Outlook</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:#34a853;margin-right:4px;"></span>Google</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:#6d5ce7;margin-right:4px;"></span>Boss only</span>
+      </div>
+      <div id="calendarGrid"></div>
+    </div>
+    <div id="dayEventsModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:900;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeDayEventsModal()">
+      <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:360px;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div id="dayEventsModalTitle" style="font-weight:700;font-size:15px;"></div>
+          <button type="button" onclick="closeDayEventsModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+        </div>
+        <div id="dayEventsModalList"></div>
+        <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;">
+          <label style="font-size:12.5px;font-weight:600;color:var(--text-muted);">Add event or task</label>
+          <input type="text" id="dayModalEventTitle" placeholder="e.g. Client call, tax deadline" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;margin-top:4px;">
+          <input type="text" id="dayModalEventNotes" placeholder="Any extra details (optional)" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;margin-top:8px;">
+          <label style="font-size:12.5px;font-weight:600;color:var(--text-muted);margin-top:8px;display:block;">🔔 Alert Time (defaults to 9:00 AM)</label>
+          <input type="time" id="dayModalEventTime" value="09:00" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;margin-top:4px;">
+          <label style="font-size:12.5px;font-weight:600;color:var(--text-muted);margin-top:8px;display:block;">📷 Attach a Photo (optional)</label>
+          <input type="file" accept="image/*" id="dayModalEventPhoto" style="width:100%;font-size:13px;margin-top:4px;">
+          <div style="display:flex;gap:16px;margin:10px 0;">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;color:var(--text);"><input type="checkbox" id="dayModalSyncGoogle" checked style="width:auto;"> 🟢 Google</label>
+            <label style="display:flex;align-items:center;gap:6px;font-weight:500;font-size:13px;color:var(--text);"><input type="checkbox" id="dayModalSyncOutlook" checked style="width:auto;"> 🔵 Outlook</label>
+          </div>
+          <button class="primary" style="margin-top:2px;" onclick="addEventFromDayModal()">Save to This Day</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="editEventModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:960;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeEditEventModal()">
+      <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--shadow);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div style="font-weight:700;font-size:15px;">Edit Event</div>
+          <button type="button" onclick="closeEditEventModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+        </div>
+        <div id="editEventExternalNotice" style="display:none;font-size:12.5px;color:var(--text-muted);background:#f5f3ff;padding:8px 10px;border-radius:8px;margin-bottom:10px;"></div>
+        <label>Title</label>
+        <input type="text" id="editEventTitle">
+        <label>Date</label>
+        <input type="date" id="editEventDate">
+        <label>Notes (optional)</label>
+        <input type="text" id="editEventNotes">
+        <div style="display:flex;gap:8px;margin-top:14px;">
+          <button class="primary" id="editEventSaveBtn" style="flex:1;" onclick="saveEventEdit()">Save Changes</button>
+          <button type="button" style="flex:0 0 auto;padding:0 16px;border-radius:10px;border:1px solid #f3d5d5;background:#fff;color:#c0392b;font-weight:600;cursor:pointer;" onclick="deleteEventFromEditModal()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Upcoming Events</h2>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <button type="button" style="width:auto;padding:7px 14px;font-size:12.5px;border-radius:8px;border:1px solid #3b5bdb;background:#fff;color:#3b5bdb;cursor:pointer;font-weight:600;" onclick="connectOutlook()">🔗 Connect Outlook Calendar</button>
+        <button type="button" style="width:auto;padding:7px 14px;font-size:12.5px;border-radius:8px;border:1px solid #34a853;background:#fff;color:#34a853;cursor:pointer;font-weight:600;" onclick="connectGoogle()">🔗 Connect Google Calendar</button>
+      </div>
+      <div id="outlookSyncStatus" style="font-size:12px;color:var(--text-muted);margin-bottom:4px;"></div>
+      <div id="googleSyncStatus" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;"></div>
+      <div id="eventList" class="event-grid"><div class="empty-state">No events scheduled yet.</div></div>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted);text-align:center;padding:14px 20px 4px;line-height:1.5;">Boss is a tracking and organization tool. It does not provide tax, legal, or financial advice, and any deduction estimates shown are for reference only. Consult a qualified tax professional regarding your specific situation.</p>
+  </section>
+
+  <!-- REMINDERS -->
+  <section id="tab-reminders" class="tab-content">
+    <div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2>⏰ Add a Reminder</h2>
+      <label>What do you need to remember?</label>
+      <input type="text" id="reminderText" placeholder="e.g. File quarterly taxes">
+      <label>Due Date</label>
+      <input type="date" id="reminderDate">
+      <button class="primary" onclick="addReminder()">Save Reminder</button>
+    </div>
+<div class="quick-nav-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <button type="button" onclick="switchTab('mileage')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🚗 Mileage</button>
+      <button type="button" onclick="switchTab('receipts')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:#fff;color:var(--violet-blue);border:1px solid var(--border);">🧾 Receipts</button>
+      <button type="button" onclick="switchTab('reminders')" style="width:auto;padding:7px 14px;font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;background:var(--violet);color:#fff;border:1px solid var(--violet);">⏰ Reminders</button>
+    </div>
+    <div class="panel">
+      <h2>Your Reminders</h2>
+      <div style="display:grid;grid-template-columns:0.8fr 1.6fr;gap:10px;padding:0 16px 8px;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.03em;">
+        <div>Date</div><div>Reminder</div>
+      </div>
+      <div id="reminderList"><div class="empty-state">No reminders yet.</div></div>
+    </div>
+  </section>
+
+  <div id="editReminderModal" style="display:none;position:fixed;inset:0;background:rgba(30,27,46,0.45);z-index:950;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this) closeEditReminderModal()">
+    <div style="background:white;border-radius:16px;padding:20px;width:100%;max-width:360px;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:700;font-size:15px;">Edit Reminder</div>
+        <button type="button" onclick="closeEditReminderModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;">✕</button>
+      </div>
+      <input type="hidden" id="editReminderId">
+      <label>What do you need to remember?</label>
+      <input type="text" id="editReminderText">
+      <label>Due Date</label>
+      <input type="date" id="editReminderDate">
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="primary" style="flex:1;" onclick="saveReminderEdit()">Save Changes</button>
+        <button type="button" style="flex:0 0 auto;padding:0 16px;border-radius:10px;border:1px solid #f3d5d5;background:#fff;color:#c0392b;font-weight:600;cursor:pointer;" onclick="deleteReminderFromEditModal()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IRS -->
+  <section id="tab-irs" class="tab-content">
+    <div class="panel">
+      <h2>🏛️ IRS Resource Hub</h2>
+      <a class="irs-link" href="https://www.irs.gov/forms-pubs" target="_blank" rel="noopener">
+        Forms & Publications
+        <div class="desc">Download current IRS forms and instructions</div>
+      </a>
+      <a class="irs-link" href="https://www.irs.gov/individuals/standard-mileage-rates" target="_blank" rel="noopener">
+        Standard Mileage Rates
+        <div class="desc">Current and prior year mileage deduction rates</div>
+      </a>
+      <a class="irs-link" href="https://www.irs.gov/payments" target="_blank" rel="noopener">
+        Make a Payment
+        <div class="desc">Pay estimated taxes or a balance due</div>
+      </a>
+      <a class="irs-link" href="https://www.irs.gov/refunds" target="_blank" rel="noopener">
+        Check Refund Status
+        <div class="desc">Track the status of your tax refund</div>
+      </a>
+      <a class="irs-link" href="https://www.irs.gov/tax-professionals" target="_blank" rel="noopener">
+        Tax Pro Resources
+        <div class="desc">Guidance and tools for tax preparers</div>
+      </a>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted);text-align:center;padding:14px 20px 4px;line-height:1.5;">Boss is a tracking and organization tool. It does not provide tax, legal, or financial advice, and any deduction estimates shown are for reference only. Consult a qualified tax professional regarding your specific situation.</p>
+  </section>
+
+  <!-- PERKS -->
+  <section id="tab-perks" class="tab-content">
+    <div class="panel">
+      <h2>⭐ Perks</h2>
+      <div id="perksList" style="display:flex;flex-direction:column;"></div>
+      <div style="padding:12px 4px 4px;">
+        <a href="#" onclick="addPerkLink();return false;" style="font-size:13.5px;color:var(--violet);font-weight:600;text-decoration:none;">＋ Add link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKY NOTES -->
+  <section id="tab-notes" class="tab-content">
+    <div class="panel">
+      <h2>🗒️ Sticky Notes</h2>
+      <div style="padding:4px 4px 14px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;">
+        <a href="#" onclick="addStickyNote();return false;" style="font-size:13.5px;color:var(--violet);font-weight:600;text-decoration:none;">＋ Add note</a>
+        <div id="stickyColorPicker" style="display:flex;gap:6px;"></div>
+      </div>
+      <div id="stickyNotesBoard" style="display:flex;flex-wrap:wrap;gap:14px;padding:4px;"></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://wnmvwlpmigxargckfhvl.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Qqvv9Upf28mvooxp7vHtvQ_gERzKkSq';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const MILEAGE_RATE = 0.70;
+const MILEAGE_RATE_NONPROFIT = 0.14;
+function rateForTrip(t){
+  return (t && t.trip_type === 'nonprofit') ? MILEAGE_RATE_NONPROFIT : MILEAGE_RATE;
+}
+function tripDeduction(t){
+  return (t.miles || 0) * rateForTrip(t);
+}
+let trips = [];
+let receipts = [];
+let reminders = [];
+let currentUser = null;
+
+// Only these Boss login emails see Email, Calendar, Dashboard, IRS, and Perks.
+// Add/remove emails as needed — everyone else (friends testing the app) only
+// ever sees Mileage, Receipts, and Reminders. Restricted tabs are hidden
+// entirely for guests, not locked/greyed out.
+const BOSS_ADMIN_EMAILS = ['lizz84533@gmail.com'];
+const BOSS_ADMIN_ONLY_TABS = ['calendar', 'email', 'dashboard', 'irs', 'perks'];
+function isBossAdmin(){
+  return !!(currentUser && currentUser.email && BOSS_ADMIN_EMAILS.includes(currentUser.email.toLowerCase()));
+}
+function applyBossAccessControls(){
+  const admin = isBossAdmin();
+  document.querySelectorAll('nav.tabbar button[data-tab]').forEach(btn => {
+    if(BOSS_ADMIN_ONLY_TABS.includes(btn.dataset.tab)){
+      btn.style.display = admin ? '' : 'none';
+    }
+  });
+  ['navGmailBtn', 'navOutlookEmailBtn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if(btn) btn.style.display = admin ? '' : 'none';
+  });
+  // If a guest is currently sitting on a tab they should no longer see
+  // (e.g. an admin session ended), drop them back to Mileage.
+  if(!admin){
+    const activeTab = document.querySelector('nav.tabbar button.active');
+    if(activeTab && BOSS_ADMIN_ONLY_TABS.includes(activeTab.dataset.tab)){
+      switchTab('mileage');
+    }
+  }
+  renderPerks();
+  renderStickyNotes();
+}
+function blockIfNotAdmin(){
+  return !isBossAdmin();
+}
+
+/* ---------- Perks ---------- */
+function safeLocalStorageGet(key){
+  try{ return localStorage.getItem(key); }catch(e){ return null; }
+}
+function safeLocalStorageSet(key, value){
+  try{ localStorage.setItem(key, value); }catch(e){ /* storage unavailable in this browser context — non-fatal */ }
+}
+let perksLinks = [];
+async function loadPerks(){
+  if(!currentUser){ perksLinks = []; return; }
+  const { data, error } = await sb.from('perks').select('*').order('created_at', {ascending:true});
+  perksLinks = data || [];
+}
+function renderPerks(){
+  const list = document.getElementById('perksList');
+  if(!list) return;
+  if(!perksLinks.length){
+    list.innerHTML = '<div class="empty-state">No links yet.</div>';
+    return;
+  }
+  list.innerHTML = perksLinks.map((p) => `
+    <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <a href="${p.url}" target="_blank" rel="noopener" style="color:var(--violet-blue);font-weight:600;text-decoration:none;font-size:14px;">${p.label}</a>
+      <button onclick="deletePerkLink('${p.id}')" style="background:none;border:none;color:#c0392b;font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px;">Delete</button>
+    </div>
+  `).join('');
+}
+async function addPerkLink(){
+  if(!currentUser) return;
+  const label = prompt('Link name (e.g. company name):');
+  if(!label || !label.trim()) return;
+  const url = prompt('Link URL:');
+  if(!url || !url.trim()) return;
+  const { error } = await sb.from('perks').insert({
+    user_id: currentUser.id, label: label.trim(), url: url.trim()
+  });
+  if(error){ alert('Could not save link: ' + error.message); return; }
+  await loadPerks();
+  renderPerks();
+}
+async function deletePerkLink(id){
+  const p = perksLinks.find(x => x.id === id);
+  if(!p) return;
+  if(!confirm(`Delete "${p.label}"?`)) return;
+  const { error } = await sb.from('perks').delete().eq('id', id);
+  if(error){ alert('Could not delete link: ' + error.message); return; }
+  await loadPerks();
+  renderPerks();
+}
+/* ---------- Sticky Notes ---------- */
+const STICKY_COLORS = ['#FFF3A3', '#FFD1DC', '#B8E6B8', '#AEE3F5', '#FFCFA0', '#D9C7F5'];
+let stickyNotes = [];
+let selectedStickyColor = safeLocalStorageGet('bossStickyPickedColor') || STICKY_COLORS[0];
+async function loadStickyNotes(){
+  if(!currentUser){ stickyNotes = []; return; }
+  const { data, error } = await sb.from('sticky_notes').select('*').order('created_at', {ascending:true});
+  stickyNotes = data || [];
+}
+function renderStickyColorPicker(){
+  const picker = document.getElementById('stickyColorPicker');
+  if(!picker) return;
+  picker.innerHTML = STICKY_COLORS.map(c => `
+    <button onclick="pickStickyColor('${c}')" title="${c}" style="width:22px;height:22px;border-radius:50%;background:${c};cursor:pointer;padding:0;border:${c === selectedStickyColor ? '2px solid #555' : '1px solid rgba(0,0,0,0.15)'};box-shadow:${c === selectedStickyColor ? '0 0 0 2px #fff inset' : 'none'};"></button>
+  `).join('');
+}
+function pickStickyColor(color){
+  selectedStickyColor = color;
+  safeLocalStorageSet('bossStickyPickedColor', color);
+  renderStickyColorPicker();
+}
+function renderStickyNotes(){
+  renderStickyColorPicker();
+  renderPinnedNote();
+  const board = document.getElementById('stickyNotesBoard');
+  if(!board) return;
+  if(!stickyNotes.length){
+    board.innerHTML = '<div class="empty-state">No notes yet. Add one above.</div>';
+    return;
+  }
+  board.innerHTML = stickyNotes.map((n) => `
+    <div style="background:${n.color};width:calc(50% - 7px);min-width:120px;box-sizing:border-box;min-height:150px;border-radius:4px;padding:14px 12px;box-shadow:0 4px 10px rgba(0,0,0,0.15);display:flex;flex-direction:column;justify-content:space-between;transform:rotate(${n.tilt}deg);">
+      ${n.photo_url ? `<img src="${n.photo_url}" onclick="viewNotePhoto('${n.photo_url}')" style="width:100%;height:70px;object-fit:cover;border-radius:4px;margin-bottom:6px;cursor:pointer;">` : ''}
+      <textarea id="note-text-${n.id}" onchange="updateStickyNote('${n.id}', this.value)" placeholder="Type a note..." style="background:transparent;border:none;resize:none;width:100%;height:${n.photo_url ? '60px' : '88px'};font-size:13.5px;color:#3a3a3a;font-family:inherit;line-height:1.4;">${n.text ? n.text.replace(/"/g,'&quot;') : ''}</textarea>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="postStickyNote('${n.id}')" style="background:rgba(255,255,255,0.55);border:none;color:#3a3a3a;font-size:12px;font-weight:700;cursor:pointer;padding:4px 10px;border-radius:12px;">📌 Post</button>
+          <label style="background:rgba(255,255,255,0.55);border-radius:12px;padding:4px 8px;cursor:pointer;font-size:13px;">
+            📷
+            <input type="file" accept="image/*" style="display:none;" onchange="uploadNotePhoto('${n.id}', this)">
+          </label>
+        </div>
+        <button onclick="deleteStickyNote('${n.id}')" style="background:none;border:none;color:#c0392b;font-size:12px;font-weight:600;cursor:pointer;padding:2px 4px;">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+function viewNotePhoto(url){
+  window.open(url, '_blank');
+}
+async function uploadNotePhoto(noteId, inputEl){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file || !currentUser) return;
+  const ext = file.name.split('.').pop();
+  const path = `${currentUser.id}/note-${noteId}-${Date.now()}.${ext}`;
+  const { error: uploadError } = await sb.storage.from('boss-photos').upload(path, file);
+  if(uploadError){ alert('Could not upload photo: ' + uploadError.message); return; }
+  const { data: urlData } = sb.storage.from('boss-photos').getPublicUrl(path);
+  const photoUrl = urlData.publicUrl;
+  const { error } = await sb.from('sticky_notes').update({ photo_url: photoUrl }).eq('id', noteId);
+  if(error){ alert('Could not save photo to note: ' + error.message); return; }
+  await loadStickyNotes();
+  renderStickyNotes();
+}
+async function addStickyNote(){
+  if(!currentUser) return;
+  const tilt = (Math.random() * 6 - 3).toFixed(1);
+  const { error } = await sb.from('sticky_notes').insert({
+    user_id: currentUser.id, text: '', color: selectedStickyColor, tilt
+  });
+  if(error){ alert('Could not add note: ' + error.message); return; }
+  await loadStickyNotes();
+  renderStickyNotes();
+}
+async function updateStickyNote(id, text){
+  const n = stickyNotes.find(x => x.id === id);
+  if(!n) return;
+  n.text = text;
+  const { error } = await sb.from('sticky_notes').update({ text }).eq('id', id);
+  if(error){ alert('Could not save note: ' + error.message); }
+}
+async function recolorStickyNote(id, color){
+  const n = stickyNotes.find(x => x.id === id);
+  if(!n) return;
+  const { error } = await sb.from('sticky_notes').update({ color }).eq('id', id);
+  if(error){ alert('Could not recolor note: ' + error.message); return; }
+  await loadStickyNotes();
+  renderStickyNotes();
+}
+async function deleteStickyNote(id){
+  const { error } = await sb.from('sticky_notes').delete().eq('id', id);
+  if(error){ alert('Could not delete note: ' + error.message); return; }
+  await loadStickyNotes();
+  renderStickyNotes();
+}
+
+/* ---------- Sticky Notes: share as a picture of the actual note ---------- */
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(/\s+/);
+  let line = '';
+  const lines = [];
+  words.forEach(word => {
+    const test = line ? line + ' ' + word : word;
+    if(ctx.measureText(test).width > maxWidth && line){
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  });
+  if(line) lines.push(line);
+  lines.forEach((ln, i) => ctx.fillText(ln, x, y + i * lineHeight));
+  return lines.length;
+}
+async function shareStickyNoteImage(id){
+  const n = stickyNotes.find(x => x.id === id);
+  if(!n) return;
+  const text = (n.text || '').trim();
+  if(!text){ alert('This note is empty — add some text first.'); return; }
+
+  const size = 640;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  // Note background
+  ctx.fillStyle = n.color || '#FFF3A3';
+  ctx.fillRect(0, 0, size, size);
+
+  // Soft shadow border effect
+  ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(2, 2, size - 4, size - 4);
+
+  // Note text
+  ctx.fillStyle = '#3a3a3a';
+  ctx.font = '32px -apple-system, Helvetica, Arial, sans-serif';
+  ctx.textBaseline = 'top';
+  wrapCanvasText(ctx, text, 40, 60, size - 80, 42);
+
+  // Small "Boss" watermark
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.font = '20px -apple-system, Helvetica, Arial, sans-serif';
+  ctx.fillText('Boss', 40, size - 50);
+
+  canvas.toBlob(async (blob) => {
+    if(!blob){ alert('Could not create the note image.'); return; }
+    const file = new File([blob], 'sticky-note.png', { type: 'image/png' });
+    if(navigator.canShare && navigator.canShare({ files: [file] })){
+      try{
+        await navigator.share({ files: [file], title: 'Note from Boss' });
+      }catch(e){
+        // user cancelled the share sheet — no action needed
+      }
+    } else {
+      // Fallback: open the image so it can be saved and shared manually
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      alert('Your phone doesn\'t support direct sharing here, so the note image opened in a new tab — press and hold it to save or send.');
+    }
+  }, 'image/png');
+}
+
+/* ---------- Sticky Notes: Post to header (pinned note) ---------- */
+function pinnedNoteKey(){
+  return 'bossPinnedNote_' + ((currentUser && currentUser.email) || 'guest').toLowerCase();
+}
+function postStickyNote(id){
+  safeLocalStorageSet(pinnedNoteKey(), id);
+  renderPinnedNote();
+}
+function unpinStickyNote(){
+  safeLocalStorageSet(pinnedNoteKey(), '');
+  renderPinnedNote();
+  closePinnedNoteModal();
+}
+function renderPinnedNote(){
+  const slot = document.getElementById('pinnedNoteSlot');
+  if(!slot) return;
+  const pinnedId = safeLocalStorageGet(pinnedNoteKey());
+  const n = pinnedId ? stickyNotes.find(x => x.id === pinnedId) : null;
+  if(!n){
+    slot.style.display = 'none';
+    slot.innerHTML = '';
+    return;
+  }
+  slot.style.display = 'flex';
+  slot.style.background = n.color;
+  slot.style.position = 'relative';
+  const preview = (n.text || '').slice(0, 28);
+  slot.innerHTML = `<span>${preview || ''}</span><span style="position:absolute;top:-6px;left:-6px;font-size:14px;">📌</span>`;
+}
+function openPinnedNoteModal(){
+  const pinnedId = safeLocalStorageGet(pinnedNoteKey());
+  const n = pinnedId ? stickyNotes.find(x => x.id === pinnedId) : null;
+  if(!n) return;
+  let overlay = document.getElementById('pinnedNoteOverlay');
+  if(!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'pinnedNoteOverlay';
+    // Transparent click-catcher so tapping outside the popup closes it, without hiding the app behind it.
+    overlay.style.cssText = 'position:fixed;inset:0;background:transparent;z-index:9999;';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) closePinnedNoteModal(); });
+  }
+  overlay.innerHTML = `
+    <div id="pinnedNoteCard" style="background:${n.color};width:min(300px, 82vw);max-height:60vh;overflow-y:auto;border-radius:10px;padding:20px 18px 20px 34px;box-shadow:0 8px 24px rgba(0,0,0,0.35);position:fixed;top:110px;right:16px;-webkit-user-select:none;user-select:none;">
+      <div onmousedown="startPinnedDrag(event)" ontouchstart="startPinnedDrag(event)" title="Drag to move" style="position:absolute;top:8px;left:8px;font-size:16px;color:#3a3a3a;cursor:grab;line-height:1;touch-action:none;padding:6px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">⠿</div>
+      <button onclick="closePinnedNoteModal()" style="position:absolute;top:6px;right:10px;background:none;border:none;font-size:20px;cursor:pointer;color:#3a3a3a;">×</button>
+      <div style="font-size:17px;line-height:1.5;color:#3a3a3a;white-space:pre-wrap;margin-top:8px;">${(n.text || '').replace(/</g,'&lt;')}</div>
+      <div style="margin-top:16px;text-align:right;">
+        <button onclick="unpinStickyNote()" style="background:rgba(255,255,255,0.55);border:none;color:#3a3a3a;font-size:12px;font-weight:700;cursor:pointer;padding:5px 12px;border-radius:14px;">Unpin</button>
+      </div>
+    </div>
+  `;
+  overlay.style.display = 'block';
+}
+function closePinnedNoteModal(){
+  const overlay = document.getElementById('pinnedNoteOverlay');
+  if(overlay) overlay.style.display = 'none';
+}
+
+/* ---------- Pinned note: drag to move (works with touch on phone and mouse on laptop) ---------- */
+let pinnedNoteDrag = { active:false, offsetX:0, offsetY:0 };
+function startPinnedDrag(e){
+  const card = document.getElementById('pinnedNoteCard');
+  if(!card) return;
+  e.preventDefault();
+  pinnedNoteDrag.active = true;
+  const rect = card.getBoundingClientRect();
+  const point = e.touches ? e.touches[0] : e;
+  pinnedNoteDrag.offsetX = point.clientX - rect.left;
+  pinnedNoteDrag.offsetY = point.clientY - rect.top;
+  document.addEventListener('mousemove', dragPinnedNote);
+  document.addEventListener('mouseup', stopPinnedDrag);
+  document.addEventListener('touchmove', dragPinnedNote, { passive:false });
+  document.addEventListener('touchend', stopPinnedDrag);
+}
+function dragPinnedNote(e){
+  if(!pinnedNoteDrag.active) return;
+  e.preventDefault();
+  const card = document.getElementById('pinnedNoteCard');
+  if(!card) return;
+  const point = e.touches ? e.touches[0] : e;
+  let newLeft = point.clientX - pinnedNoteDrag.offsetX;
+  let newTop = point.clientY - pinnedNoteDrag.offsetY;
+  newLeft = Math.max(4, Math.min(window.innerWidth - card.offsetWidth - 4, newLeft));
+  newTop = Math.max(4, Math.min(window.innerHeight - card.offsetHeight - 4, newTop));
+  card.style.left = newLeft + 'px';
+  card.style.top = newTop + 'px';
+  card.style.right = 'auto';
+}
+function stopPinnedDrag(){
+  pinnedNoteDrag.active = false;
+  document.removeEventListener('mousemove', dragPinnedNote);
+  document.removeEventListener('mouseup', stopPinnedDrag);
+  document.removeEventListener('touchmove', dragPinnedNote);
+  document.removeEventListener('touchend', stopPinnedDrag);
+}
+
+/* ---------- Quick-launch Call ---------- */
+function openCallApp(){
+  openQuickContactModal('call');
+}
+
+/* ---------- Quick-launch Text ---------- */
+function openTextApp(){
+  openQuickContactModal('text');
+}
+
+function openQuickContactModal(mode){
+  let overlay = document.getElementById('quickContactOverlay');
+  if(!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'quickContactOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;box-sizing:border-box;';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) closeQuickContactModal(); });
+  }
+  const label = mode === 'call' ? '📞 Call which phone number?' : '💬 Text which phone number?';
+  const actionLabel = mode === 'call' ? 'Call' : 'Text';
+  overlay.innerHTML = `
+    <div style="background:#fff;width:100%;max-width:320px;border-radius:12px;padding:22px 20px;box-shadow:0 10px 30px rgba(0,0,0,0.35);">
+      <div style="font-size:16px;font-weight:600;color:#222;margin-bottom:12px;">${label}</div>
+      <input id="quickContactInput" type="tel" placeholder="Phone number" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:16px;border:1px solid #ccc;border-radius:8px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button onclick="closeQuickContactModal()" style="background:none;border:none;color:#666;font-size:15px;padding:8px 10px;cursor:pointer;">Cancel</button>
+        <button id="quickContactGoBtn" style="background:#4b3fd6;border:none;color:#fff;font-size:15px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;">${actionLabel}</button>
+      </div>
+    </div>
+  `;
+  overlay.style.display = 'flex';
+  const input = document.getElementById('quickContactInput');
+  const goBtn = document.getElementById('quickContactGoBtn');
+  const trigger = () => {
+    const number = (input.value || '').trim();
+    if(!number) return;
+    closeQuickContactModal();
+    window.location.href = mode === 'call' ? `tel:${number}` : `sms:${number}`;
+  };
+  goBtn.onclick = trigger;
+  input.addEventListener('keydown', (e) => { if(e.key === 'Enter') trigger(); });
+  setTimeout(() => input.focus(), 50);
+}
+function closeQuickContactModal(){
+  const overlay = document.getElementById('quickContactOverlay');
+  if(overlay) overlay.style.display = 'none';
+}
+
+async function signOutBoss(){
+  openLogoutConfirmModal();
+}
+function openLogoutConfirmModal(){
+  document.getElementById('logoutConfirmModal').style.display = 'flex';
+}
+function closeLogoutConfirmModal(){
+  document.getElementById('logoutConfirmModal').style.display = 'none';
+}
+async function confirmSignOutBoss(){
+  closeLogoutConfirmModal();
+  try{
+    await sb.auth.signOut();
+  }catch(e){ /* proceed with local reset regardless */ }
+  currentUser = null;
+  showProfilePic(null);
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authName').value = '';
+  document.getElementById('authError').textContent = '';
+  document.getElementById('mainHeader').style.display = 'none';
+  document.getElementById('mainNav').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+}
+function openEditNameModal(){
+  const current = (currentUser && currentUser.user_metadata && currentUser.user_metadata.display_name) || '';
+  document.getElementById('editNameInput').value = current;
+  document.getElementById('editNameModal').style.display = 'flex';
+}
+function closeEditNameModal(){
+  document.getElementById('editNameModal').style.display = 'none';
+}
+async function saveDisplayName(){
+  const name = document.getElementById('editNameInput').value.trim();
+  if(!name){ closeEditNameModal(); return; }
+  try{
+    const { data, error } = await sb.auth.updateUser({ data: { display_name: name } });
+    if(!error && data.user){
+      currentUser = data.user;
+      updateLoggedInAsText();
+    }
+  }catch(e){ /* Non-fatal — name just won't update this time */ }
+  closeEditNameModal();
+}
+function updateLoggedInAsText(){
+  const whoEl = document.getElementById('loggedInAsText');
+  if(!whoEl || !currentUser) return;
+  const name = currentUser.user_metadata && currentUser.user_metadata.display_name;
+  whoEl.textContent = 'Logged in as ' + (name || currentUser.email || 'unknown');
+}
+function profilePicKey(){
+  return 'bossProfilePic_' + ((currentUser && currentUser.email) || 'guest').toLowerCase();
+}
+function handleProfilePicUpload(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const dataUrl = e.target.result;
+    safeLocalStorageSet(profilePicKey(), dataUrl);
+    showProfilePic(dataUrl);
+  };
+  reader.readAsDataURL(file);
+}
+function showProfilePic(dataUrl){
+  const img = document.getElementById('profilePicImg');
+  const icon = document.getElementById('profilePicIcon');
+  if(!img || !icon) return;
+  if(dataUrl){
+    img.src = dataUrl;
+    img.style.display = 'block';
+    icon.style.display = 'none';
+  }else{
+    img.style.display = 'none';
+    icon.style.display = 'block';
+  }
+}
+function loadProfilePic(){
+  const saved = safeLocalStorageGet(profilePicKey());
+  showProfilePic(saved || null);
+}
+function maybeShowDisclaimer(){
+  if(localStorage.getItem('bossDisclaimerAcknowledged') === 'true') return;
+  document.getElementById('disclaimerModal').style.display = 'flex';
+}
+function acknowledgeDisclaimer(){
+  localStorage.setItem('bossDisclaimerAcknowledged', 'true');
+  document.getElementById('disclaimerModal').style.display = 'none';
+}
+
+/* ---------- Microsoft / Outlook login (MSAL) ---------- */
+const msalConfig = {
+  auth: {
+    clientId: "5893eac6-0b7c-489f-831f-94a6423f1595",
+    authority: "https://login.microsoftonline.com/common",
+    redirectUri: "https://bossorganize.netlify.app/"
+  },
+  cache: {
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false
+  }
+};
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+let msalInitialized = false;
+
+async function ensureMsalReady(){
+  if(!msalInitialized){
+    try{
+      const response = await msalInstance.handleRedirectPromise();
+      if(response && response.account){
+        msalInstance.setActiveAccount(response.account);
+      }
+    }catch(err){
+      console.error('MSAL redirect handling error:', err);
+    }
+    msalInitialized = true;
+  }
+  const accounts = msalInstance.getAllAccounts();
+  if(accounts.length > 0){
+    msalInstance.setActiveAccount(accounts[0]);
+    setOutlookConnected(true);
+    await loadOutlookEvents();
+  }
+}
+
+function setOutlookConnected(isConnected){
+  const statusEl = document.getElementById('statusOutlook');
+  if(statusEl){
+    if(isConnected){
+      statusEl.textContent = 'Connected';
+      statusEl.classList.add('connected');
+      statusEl.style.background = '#3b5bdb';
+    } else {
+      statusEl.textContent = 'Not connected';
+      statusEl.classList.remove('connected');
+      statusEl.style.background = '';
+    }
+  }
+  updateNavConnectDots();
+}
+
+async function connectOutlook(){
+  if(blockIfNotAdmin()) return;
+  const accounts = msalInstance.getAllAccounts();
+  if(accounts.length > 0){
+    alert('Outlook is already connected as ' + accounts[0].username);
+    return;
+  }
+  try{
+    await msalInstance.loginRedirect({
+      scopes: ["User.Read", "Calendars.ReadWrite"]
+    });
+  }catch(err){
+    alert('Could not connect to Outlook: ' + err.message);
+  }
+}
+
+let outlookEvents = [];
+
+async function getGraphToken(){
+  const account = msalInstance.getActiveAccount();
+  if(!account) return null;
+  try{
+    const result = await msalInstance.acquireTokenSilent({
+      scopes: ["Calendars.ReadWrite"],
+      account
+    });
+    return result.accessToken;
+  }catch(err){
+    console.error('Silent token error, falling back to redirect:', err);
+    await msalInstance.acquireTokenRedirect({ scopes: ["Calendars.ReadWrite"] });
+    return null;
+  }
+}
+
+async function loadOutlookEvents(){
+  const statusEl = document.getElementById('outlookSyncStatus');
+  const token = await getGraphToken();
+  if(!token){
+    if(statusEl) statusEl.textContent = 'Outlook sync: could not get an access token.';
+    return;
+  }
+
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startDate = startOfToday.toISOString();
+  const future = new Date(startOfToday);
+  future.setDate(future.getDate() + 60);
+  const endDate = future.toISOString();
+
+  const url = `https://graph.microsoft.com/v1.0/me/calendarview?startdatetime=${encodeURIComponent(startDate)}&enddatetime=${encodeURIComponent(endDate)}&$orderby=start/dateTime&$top=100`;
+
+  try{
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Prefer: 'outlook.timezone="UTC"'
+      }
+    });
+    if(!res.ok){
+      const errText = await res.text();
+      if(statusEl) statusEl.textContent = `Outlook sync error (${res.status}): ${errText.slice(0,150)}`;
+      return;
+    }
+    const data = await res.json();
+    outlookEvents = (data.value || []).map(ev => ({
+      id: ev.id,
+      title: ev.subject || '(No title)',
+      event_date: (ev.start && ev.start.dateTime) ? ev.start.dateTime.split('T')[0] : '',
+      notes: '',
+      source: 'outlook'
+    }));
+    if(statusEl) statusEl.textContent = `Outlook sync: found ${outlookEvents.length} event(s) in the next 60 days.`;
+    if(statusEl) statusEl.style.color = '#3b5bdb';
+    if(statusEl) statusEl.style.fontWeight = '600';
+    renderEvents();
+  }catch(err){
+    if(statusEl) statusEl.textContent = 'Outlook sync error: ' + err.message;
+  }
+}
+/* ---------- end Microsoft / Outlook login ---------- */
+
+/* ---------- Google Calendar login (Google Identity Services) ---------- */
+const GOOGLE_CLIENT_ID = "218182449585-ep4tf4usbbleqpd3vfp60muj5vln8r78.apps.googleusercontent.com";
+const GOOGLE_SCOPE = "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events";
+const GMAIL_SCOPE = "https://mail.google.com/";
+let googleTokenClient = null;
+let gmailTokenClient = null;
+let gmailAccessToken = null;
+let gmailMessages = [];
+let googleAccessToken = null;
+let googleEvents = [];
+
+function setGoogleConnected(isConnected){
+  const statusEl = document.getElementById('statusGoogle');
+  if(statusEl){
+    if(isConnected){
+      statusEl.textContent = 'Connected';
+      statusEl.classList.add('connected');
+      statusEl.style.background = '#34a853';
+    } else {
+      statusEl.textContent = 'Not connected';
+      statusEl.classList.remove('connected');
+      statusEl.style.background = '';
+    }
+  }
+  updateNavConnectDots();
+}
+
+function ensureGoogleClientReady(){
+  if(googleTokenClient || typeof google === 'undefined' || !google.accounts) return;
+  googleTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: GOOGLE_SCOPE,
+    callback: async (tokenResponse) => {
+      if(tokenResponse && tokenResponse.access_token){
+        googleAccessToken = tokenResponse.access_token;
+        localStorage.setItem('googleConnected', 'true');
+        setGoogleConnected(true);
+        await loadGoogleEvents();
+      }
+    }
+  });
+}
+
+function connectGoogle(){
+  if(blockIfNotAdmin()) return;
+  ensureGoogleClientReady();
+  if(!googleTokenClient){
+    alert('Google sign-in is still loading — try again in a moment.');
+    return;
+  }
+  googleTokenClient.requestAccessToken({ prompt: googleAccessToken ? '' : 'consent' });
+}
+
+async function tryGoogleSilentReconnect(){
+  ensureGoogleClientReady();
+  if(!googleTokenClient) return;
+  if(sessionStorage.getItem('googleSilentReconnectDone') === 'true') return;
+  if(localStorage.getItem('googleConnected') === 'true'){
+    sessionStorage.setItem('googleSilentReconnectDone', 'true');
+    googleTokenClient.requestAccessToken({ prompt: '' });
+  }
+}
+
+async function loadGoogleEvents(){
+  const statusEl = document.getElementById('googleSyncStatus');
+  if(!googleAccessToken) return;
+
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const timeMin = startOfToday.toISOString();
+  const future = new Date(startOfToday);
+  future.setDate(future.getDate() + 60);
+  const timeMax = future.toISOString();
+
+  const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&orderBy=startTime&maxResults=100`;
+
+  try{
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${googleAccessToken}` }
+    });
+    if(!res.ok){
+      const errText = await res.text();
+      if(statusEl) statusEl.textContent = `Google sync error (${res.status}): ${errText.slice(0,150)}`;
+      return;
+    }
+    const data = await res.json();
+    googleEvents = (data.items || []).map(ev => ({
+      id: ev.id,
+      title: ev.summary || '(No title)',
+      event_date: (ev.start && (ev.start.date || (ev.start.dateTime ? ev.start.dateTime.split('T')[0] : ''))) || '',
+      notes: '',
+      source: 'google'
+    }));
+    if(statusEl) statusEl.textContent = `Google sync: found ${googleEvents.length} event(s) in the next 60 days.`;
+    if(statusEl) statusEl.style.color = '#34a853';
+    if(statusEl) statusEl.style.fontWeight = '600';
+    renderEvents();
+  }catch(err){
+    if(statusEl) statusEl.textContent = 'Google sync error: ' + err.message;
+  }
+}
+/* ---------- end Google Calendar login ---------- */
+
+/* ---------- Gmail (read-only) ---------- */
+function setGmailConnected(isConnected){
+  const dot = document.getElementById('navGmailDot');
+  if(dot) dot.style.display = isConnected ? 'block' : 'none';
+}
+
+function ensureGmailClientReady(){
+  if(gmailTokenClient || typeof google === 'undefined' || !google.accounts) return;
+  gmailTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: GMAIL_SCOPE,
+    callback: async (tokenResponse) => {
+      if(tokenResponse && tokenResponse.access_token){
+        gmailAccessToken = tokenResponse.access_token;
+        localStorage.setItem('gmailConnected', 'true');
+        setGmailConnected(true);
+        await loadGmailMessages();
+        if(gmailLabels.length === 0) await fetchGmailLabels();
+      }
+    }
+  });
+}
+
+function connectGmailInbox(){
+  if(blockIfNotAdmin()) return;
+  switchTab('email');
+  ensureGmailClientReady();
+  if(!gmailTokenClient){
+    alert('Gmail sign-in is still loading — try again in a moment.');
+    return;
+  }
+  gmailTokenClient.requestAccessToken({ prompt: gmailAccessToken ? '' : 'consent' });
+}
+
+async function tryGmailSilentReconnect(){
+  ensureGmailClientReady();
+  if(!gmailTokenClient) return;
+  if(sessionStorage.getItem('gmailSilentReconnectDone') === 'true') return;
+  if(localStorage.getItem('gmailConnected') === 'true'){
+    sessionStorage.setItem('gmailSilentReconnectDone', 'true');
+    gmailTokenClient.requestAccessToken({ prompt: '' });
+  }
+}
+
+const GMAIL_FOLDER_LABELS = { inbox: 'INBOX', sent: 'SENT', drafts: 'DRAFT', trash: 'TRASH' };
+let gmailLabels = [];
+
+async function fetchGmailLabels(){
+  if(!gmailAccessToken) return;
+  try{
+    const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/labels', {
+      headers: { Authorization: `Bearer ${gmailAccessToken}` }
+    });
+    if(!res.ok) return;
+    const data = await res.json();
+    const systemNice = { INBOX: '📥 Inbox', SENT: '📤 Sent', DRAFT: '📝 Drafts', TRASH: '🗑️ Trash', SPAM: '🚫 Spam', STARRED: '⭐ Starred', IMPORTANT: '❗ Important' };
+    const systemOrder = ['INBOX', 'SENT', 'DRAFT', 'STARRED', 'IMPORTANT', 'SPAM', 'TRASH'];
+    const labels = (data.labels || []).filter(l => l.type === 'user' || systemOrder.includes(l.id));
+    gmailLabels = labels
+      .map(l => ({
+        id: l.id,
+        name: l.type === 'user' ? l.name : (systemNice[l.id] || l.name),
+        bgColor: l.color && l.color.backgroundColor ? l.color.backgroundColor : null,
+        textColor: l.color && l.color.textColor ? l.color.textColor : null
+      }))
+      .sort((a, b) => {
+        const ai = systemOrder.indexOf(a.id), bi = systemOrder.indexOf(b.id);
+        if(ai !== -1 && bi !== -1) return ai - bi;
+        if(ai !== -1) return -1;
+        if(bi !== -1) return 1;
+        return a.name.localeCompare(b.name);
+      });
+    if(currentEmailProvider === 'gmail') renderFolderTabs();
+  }catch(err){
+    console.error('Gmail labels fetch error:', err);
+  }
+}
+
+async function loadGmailMessages(folder){
+  folder = folder || currentEmailFolder;
+  if(!gmailAccessToken) return;
+  try{
+    const labelId = GMAIL_FOLDER_LABELS[folder] || folder;
+    const listRes = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages?maxResults=15&labelIds=${labelId}`, {
+      headers: { Authorization: `Bearer ${gmailAccessToken}` }
+    });
+    if(!listRes.ok) return;
+    const listData = await listRes.json();
+    const ids = (listData.messages || []).map(m => m.id);
+    const details = await Promise.all(ids.map(async id => {
+      const res = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${id}?format=metadata&metadataHeaders=Subject&metadataHeaders=From&metadataHeaders=Date&metadataHeaders=Message-ID&metadataHeaders=List-Unsubscribe`, {
+        headers: { Authorization: `Bearer ${gmailAccessToken}` }
+      });
+      if(!res.ok) return null;
+      const data = await res.json();
+      const headers = (data.payload && data.payload.headers) || [];
+      const getHeader = name => (headers.find(h => h.name === name) || {}).value || '';
+      const labelIds = data.labelIds || [];
+      const hasAttachments = !!(data.payload && data.payload.parts && data.payload.parts.some(p => p.filename));
+      return {
+        id: data.id,
+        threadId: data.threadId,
+        messageIdHeader: getHeader('Message-ID'),
+        subject: getHeader('Subject') || '(No subject)',
+        from: getHeader('From'),
+        date: getHeader('Date'),
+        snippet: data.snippet || '',
+        isUnread: labelIds.includes('UNREAD'),
+        isFlagged: labelIds.includes('STARRED'),
+        hasAttachments,
+        unsubscribe: getHeader('List-Unsubscribe') || ''
+      };
+    }));
+    gmailMessages = details.filter(Boolean);
+    renderInboxPanel();
+  }catch(err){
+    console.error('Gmail fetch error:', err);
+  }
+}
+/* ---------- end Gmail ---------- */
+
+/* ---------- Outlook Mail (read-only) ---------- */
+let outlookMessages = [];
+
+function setOutlookEmailConnected(isConnected){
+  const dot = document.getElementById('navOutlookEmailDot');
+  if(dot) dot.style.display = isConnected ? 'block' : 'none';
+}
+
+const OUTLOOK_MAIL_SCOPES = ["Mail.ReadWrite", "Mail.Send"];
+
+async function getOutlookMailToken(){
+  const account = msalInstance.getActiveAccount();
+  if(!account) return null;
+  try{
+    const result = await msalInstance.acquireTokenSilent({ scopes: OUTLOOK_MAIL_SCOPES, account });
+    return result.accessToken;
+  }catch(err){
+    return null;
+  }
+}
+
+async function connectOutlookInbox(){
+  if(blockIfNotAdmin()) return;
+  switchTab('email');
+  const accounts = msalInstance.getAllAccounts();
+  const account = msalInstance.getActiveAccount() || accounts[0];
+
+  // If we already have a working connection, don't force a fresh redirect —
+  // just reload the inbox with the existing session.
+  if(account){
+    try{
+      const silent = await msalInstance.acquireTokenSilent({ scopes: OUTLOOK_MAIL_SCOPES, account });
+      if(silent && silent.accessToken){
+        await tryLoadOutlookMail();
+        return;
+      }
+    }catch(err){
+      // fall through to redirect below
+    }
+  }
+
+  sessionStorage.setItem('bossGoToEmailTab', '1');
+  try{
+    if(accounts.length === 0){
+      await msalInstance.loginRedirect({ scopes: ["User.Read", "Calendars.ReadWrite", ...OUTLOOK_MAIL_SCOPES] });
+    } else {
+      await msalInstance.acquireTokenRedirect({ scopes: OUTLOOK_MAIL_SCOPES });
+    }
+  }catch(err){
+    alert('Could not connect Outlook Email: ' + err.message);
+  }
+}
+
+const OUTLOOK_FOLDER_IDS = { inbox: 'inbox', sent: 'sentitems', drafts: 'drafts', trash: 'deleteditems' };
+let outlookFolders = [];
+
+async function fetchOutlookFolders(){
+  const token = await getOutlookMailToken();
+  if(!token) return;
+  try{
+    const res = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders?$top=50', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if(!res.ok) return;
+    const data = await res.json();
+    const niceNames = { 'Inbox': '📥 Inbox', 'Sent Items': '📤 Sent', 'Drafts': '📝 Drafts', 'Deleted Items': '🗑️ Trash', 'Junk Email': '🚫 Junk', 'Archive': '📦 Archive' };
+    const order = ['Inbox', 'Sent Items', 'Drafts', 'Junk Email', 'Archive', 'Deleted Items'];
+    outlookFolders = (data.value || [])
+      .map(f => ({ id: f.id, name: niceNames[f.displayName] || ('📁 ' + f.displayName), rawName: f.displayName }))
+      .sort((a, b) => {
+        const ai = order.indexOf(a.rawName), bi = order.indexOf(b.rawName);
+        if(ai !== -1 && bi !== -1) return ai - bi;
+        if(ai !== -1) return -1;
+        if(bi !== -1) return 1;
+        return a.rawName.localeCompare(b.rawName);
+      });
+    if(currentEmailProvider === 'outlook') renderFolderTabs();
+  }catch(err){
+    console.error('Outlook folders fetch error:', err);
+  }
+}
+
+async function tryLoadOutlookMail(folder){
+  folder = folder || currentEmailFolder;
+  const token = await getOutlookMailToken();
+  if(!token){
+    setOutlookEmailConnected(false);
+    return;
+  }
+  setOutlookEmailConnected(true);
+  if(outlookFolders.length === 0) fetchOutlookFolders();
+  try{
+    const folderId = OUTLOOK_FOLDER_IDS[folder] || folder;
+    const res = await fetch(`https://graph.microsoft.com/v1.0/me/mailFolders/${folderId}/messages?$top=15&$orderby=receivedDateTime desc&$select=subject,from,receivedDateTime,bodyPreview,isRead,hasAttachments,flag,internetMessageHeaders`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if(!res.ok) return;
+    const data = await res.json();
+    outlookMessages = (data.value || []).map(m => {
+      const headers = m.internetMessageHeaders || [];
+      const unsubHeader = headers.find(h => (h.name || '').toLowerCase() === 'list-unsubscribe');
+      return {
+        id: m.id,
+        subject: m.subject || '(No subject)',
+        from: (m.from && m.from.emailAddress && m.from.emailAddress.address) || '',
+        date: m.receivedDateTime || '',
+        snippet: m.bodyPreview || '',
+        isUnread: m.isRead === false,
+        isFlagged: !!(m.flag && m.flag.flagStatus === 'flagged'),
+        hasAttachments: !!m.hasAttachments,
+        unsubscribe: unsubHeader ? unsubHeader.value : ''
+      };
+    });
+    renderInboxPanel();
+  }catch(err){
+    console.error('Outlook mail fetch error:', err);
+  }
+}
+/* ---------- end Outlook Mail ---------- */
+
+let currentEmailFolder = 'inbox';
+let currentEmailProvider = 'all'; // 'all', 'gmail', 'outlook'
+let emailSearchQuery = '';
+let emailSearchDebounceTimer = null;
+let activeEmailFilters = new Set();
+
+function toggleEmailFilter(filter){
+  if(activeEmailFilters.has(filter)) activeEmailFilters.delete(filter);
+  else activeEmailFilters.add(filter);
+  document.querySelectorAll('#emailFilterTabs .folder-tab').forEach(btn => {
+    btn.classList.toggle('active', activeEmailFilters.has(btn.dataset.filter));
+  });
+  renderInboxPanel({ keepSearch: true });
+}
+
+function handleEmailSearchInput(value){
+  emailSearchQuery = value || '';
+  const clearBtn = document.getElementById('emailSearchClearBtn');
+  if(clearBtn) clearBtn.style.display = emailSearchQuery ? 'block' : 'none';
+  clearTimeout(emailSearchDebounceTimer);
+  emailSearchDebounceTimer = setTimeout(() => renderInboxPanel({ keepSearch: true }), 200);
+}
+
+function clearEmailSearch(){
+  emailSearchQuery = '';
+  const input = document.getElementById('emailSearchInput');
+  if(input) input.value = '';
+  const clearBtn = document.getElementById('emailSearchClearBtn');
+  if(clearBtn) clearBtn.style.display = 'none';
+  renderInboxPanel({ keepSearch: true });
+}
+
+function renderFolderTabs(){
+  const container = document.getElementById('emailFolderTabs');
+  if(!container) return;
+  let tabs;
+  if(currentEmailProvider === 'gmail' && gmailLabels.length){
+    tabs = gmailLabels.map(l => ({ id: l.id, label: l.name, bgColor: l.bgColor, textColor: l.textColor }));
+  } else if(currentEmailProvider === 'outlook' && outlookFolders.length){
+    tabs = outlookFolders.map(f => ({ id: f.id, label: f.name }));
+  } else {
+    tabs = [
+      { id: 'inbox', label: '📥 Inbox' },
+      { id: 'sent', label: '📤 Sent' },
+      { id: 'drafts', label: '📝 Drafts' },
+      { id: 'trash', label: '🗑️ Trash' }
+    ];
+  }
+  container.innerHTML = tabs.map((t, i) => {
+    const isActive = t.id === currentEmailFolder;
+    let customStyle = '';
+    let dotHtml = '';
+    if(t.bgColor){
+      dotHtml = `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${t.bgColor};margin-right:6px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08);"></span>`;
+      customStyle = isActive
+        ? ` style="background:${t.bgColor};color:${t.textColor || '#fff'};border-color:${t.bgColor};"`
+        : ` style="background:#fff;color:var(--text);border-color:${t.bgColor};"`;
+    }
+    return `<button type="button" class="folder-tab${isActive ? ' active' : ''}" data-idx="${i}"${customStyle}>${dotHtml}${t.label}</button>`;
+  }).join('');
+  Array.from(container.children).forEach((btn, i) => {
+    btn.addEventListener('click', () => switchEmailFolder(tabs[i].id));
+  });
+}
+
+function switchEmailProvider(provider){
+  currentEmailProvider = provider;
+  document.querySelectorAll('.provider-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.provider === provider);
+  });
+  currentEmailFolder = 'inbox';
+  resetEmailSearchUI();
+  renderFolderTabs();
+  reloadInboxForCurrentFolder();
+}
+
+function resetEmailSearchUI(){
+  emailSearchQuery = '';
+  const input = document.getElementById('emailSearchInput');
+  if(input) input.value = '';
+  const clearBtn = document.getElementById('emailSearchClearBtn');
+  if(clearBtn) clearBtn.style.display = 'none';
+  activeEmailFilters.clear();
+  document.querySelectorAll('#emailFilterTabs .folder-tab').forEach(btn => btn.classList.remove('active'));
+}
+
+function reloadInboxForCurrentFolder(){
+  const list = document.getElementById('inboxList');
+  if(list) list.innerHTML = '<div class="empty-state" style="padding:24px 18px;">Loading...</div>';
+  gmailMessages = [];
+  outlookMessages = [];
+  const gmailReady = !!gmailAccessToken;
+  const outlookReady = !!msalInstance.getActiveAccount();
+  if(currentEmailProvider !== 'outlook' && gmailReady) loadGmailMessages(currentEmailFolder);
+  if(currentEmailProvider !== 'gmail' && outlookReady) tryLoadOutlookMail(currentEmailFolder);
+  if(!gmailReady && !outlookReady){
+    renderInboxPanel();
+  }
+}
+
+function switchEmailFolder(folder){
+  currentEmailFolder = folder;
+  renderFolderTabs();
+  reloadInboxForCurrentFolder();
+}
+
+/* ---------- Compose / Reply / Delete ---------- */
+let emailModalMode = 'compose'; // 'compose' or 'reply'
+let emailModalReplyTarget = null; // the original message object being replied to
+
+function openComposeModal(){
+  emailModalMode = 'compose';
+  emailModalReplyTarget = null;
+  document.getElementById('emailModalTitle').textContent = 'New Email';
+  document.getElementById('emailTo').value = '';
+  document.getElementById('emailTo').disabled = false;
+  document.getElementById('emailSubject').value = '';
+  document.getElementById('emailSubject').disabled = false;
+  document.getElementById('emailBody').value = '';
+  document.getElementById('emailModalError').textContent = '';
+  resetEmailAttachmentField();
+  setupEmailProviderOptions();
+  document.getElementById('emailModal').style.display = 'flex';
+}
+
+function openReplyModal(msg){
+  emailModalMode = 'reply';
+  emailModalReplyTarget = msg;
+  document.getElementById('emailModalTitle').textContent = 'Reply';
+  const toAddress = extractEmailAddress(msg.from);
+  document.getElementById('emailTo').value = toAddress;
+  document.getElementById('emailTo').disabled = false;
+  const subj = msg.subject && msg.subject.toLowerCase().startsWith('re:') ? msg.subject : 'Re: ' + (msg.subject || '');
+  document.getElementById('emailSubject').value = subj;
+  document.getElementById('emailSubject').disabled = false;
+  document.getElementById('emailBody').value = '';
+  document.getElementById('emailModalError').textContent = '';
+  resetEmailAttachmentField();
+  setupEmailProviderOptions(msg.source);
+  document.getElementById('emailModal').style.display = 'flex';
+}
+
+function openForwardModal(msg){
+  emailModalMode = 'forward';
+  emailModalReplyTarget = null;
+  document.getElementById('emailModalTitle').textContent = 'Forward';
+  document.getElementById('emailTo').value = '';
+  document.getElementById('emailTo').disabled = false;
+  const subj = msg.subject && msg.subject.toLowerCase().startsWith('fwd:') ? msg.subject : 'Fwd: ' + (msg.subject || '');
+  document.getElementById('emailSubject').value = subj;
+  document.getElementById('emailSubject').disabled = false;
+  const bodyEl = document.getElementById('emailBodyContent');
+  const originalBody = (bodyEl && bodyEl.textContent) || msg.snippet || '';
+  const dateFull = msg.date ? new Date(msg.date).toLocaleString() : '';
+  const fromClean = (msg.from || '').replace(/"/g, '');
+  document.getElementById('emailBody').value =
+    `\n\n---------- Forwarded message ----------\nFrom: ${fromClean}\nDate: ${dateFull}\nSubject: ${msg.subject || ''}\n\n${originalBody}`;
+  document.getElementById('emailModalError').textContent = '';
+  resetEmailAttachmentField();
+  setupEmailProviderOptions(msg.source);
+  document.getElementById('emailModal').style.display = 'flex';
+}
+
+function resetEmailAttachmentField(){
+  const input = document.getElementById('emailAttachment');
+  if(input) input.value = '';
+  const list = document.getElementById('emailAttachmentList');
+  if(list) list.textContent = '';
+}
+
+function previewEmailAttachments(){
+  const input = document.getElementById('emailAttachment');
+  const list = document.getElementById('emailAttachmentList');
+  if(!input || !list) return;
+  const files = Array.from(input.files || []);
+  list.textContent = files.length ? '📎 ' + files.map(f => f.name).join(', ') : '';
+}
+
+function setupEmailProviderOptions(forceSource){
+  const providerRow = document.getElementById('emailModalProviderRow');
+  const providerSelect = document.getElementById('emailProvider');
+  const gmailReady = !!gmailAccessToken;
+  const outlookReady = !!msalInstance.getActiveAccount();
+
+  if(forceSource){
+    providerRow.style.display = 'none';
+    providerSelect.value = forceSource === 'Gmail' ? 'gmail' : 'outlook';
+    return;
+  }
+
+  providerSelect.innerHTML = '';
+  if(gmailReady) providerSelect.innerHTML += '<option value="gmail">Gmail</option>';
+  if(outlookReady) providerSelect.innerHTML += '<option value="outlook">Outlook</option>';
+
+  if(!gmailReady && !outlookReady){
+    providerRow.style.display = 'none';
+    document.getElementById('emailModalError').textContent = 'Connect Gmail or Outlook Email from the top nav first.';
+  } else if(gmailReady && outlookReady){
+    providerRow.style.display = '';
+  } else {
+    providerRow.style.display = 'none';
+  }
+}
+
+function extractEmailAddress(fromField){
+  if(!fromField) return '';
+  const match = fromField.match(/<([^>]+)>/);
+  return match ? match[1] : fromField.trim();
+}
+
+function closeEmailModal(){
+  document.getElementById('emailModal').style.display = 'none';
+}
+
+function base64UrlEncode(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function readFileAsBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // result looks like "data:<mime>;base64,<data>" — strip the prefix
+      const result = reader.result;
+      const base64 = result.substring(result.indexOf(',') + 1);
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function getSelectedAttachments(){
+  const input = document.getElementById('emailAttachment');
+  const files = input && input.files ? Array.from(input.files) : [];
+  return Promise.all(files.map(async file => ({
+    filename: file.name,
+    mimeType: file.type || 'application/octet-stream',
+    base64: await readFileAsBase64(file)
+  })));
+}
+
+async function sendGmailMessage({ to, subject, body, replyTo, attachments }){
+  const boundary = 'boss_boundary_' + Date.now();
+  let headers = `To: ${to}\r\nSubject: ${subject}\r\n`;
+  if(replyTo && replyTo.messageIdHeader){
+    headers += `In-Reply-To: ${replyTo.messageIdHeader}\r\nReferences: ${replyTo.messageIdHeader}\r\n`;
+  }
+
+  let raw;
+  if(attachments && attachments.length){
+    headers += `MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n`;
+    let parts = `--${boundary}\r\nContent-Type: text/plain; charset="UTF-8"\r\n\r\n${body}\r\n`;
+    attachments.forEach(att => {
+      parts += `--${boundary}\r\nContent-Type: ${att.mimeType}; name="${att.filename}"\r\nContent-Disposition: attachment; filename="${att.filename}"\r\nContent-Transfer-Encoding: base64\r\n\r\n${att.base64}\r\n`;
+    });
+    parts += `--${boundary}--`;
+    raw = headers + parts;
+  } else {
+    headers += `Content-Type: text/plain; charset="UTF-8"\r\n\r\n`;
+    raw = headers + body;
+  }
+
+  const requestBody = { raw: base64UrlEncode(raw) };
+  if(replyTo && replyTo.threadId) requestBody.threadId = replyTo.threadId;
+
+  const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${gmailAccessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  });
+  if(!res.ok){
+    const errText = await res.text();
+    throw new Error(`Gmail send failed (${res.status}): ${errText.slice(0,150)}`);
+  }
+}
+
+async function sendOutlookMessage({ to, subject, body, attachments }){
+  const token = await getOutlookMailToken();
+  if(!token) throw new Error('Could not get an Outlook access token. Try reconnecting Outlook Email.');
+  const message = {
+    subject,
+    body: { contentType: 'Text', content: body },
+    toRecipients: [{ emailAddress: { address: to } }]
+  };
+  if(attachments && attachments.length){
+    message.attachments = attachments.map(att => ({
+      '@odata.type': '#microsoft.graph.fileAttachment',
+      name: att.filename,
+      contentType: att.mimeType,
+      contentBytes: att.base64
+    }));
+  }
+  const res = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message })
+  });
+  if(!res.ok){
+    const errText = await res.text();
+    throw new Error(`Outlook send failed (${res.status}): ${errText.slice(0,150)}`);
+  }
+}
+
+async function replyToOutlookMessage(messageId, body, { to, subject } = {}){
+  const token = await getOutlookMailToken();
+  if(!token) throw new Error('Could not get an Outlook access token. Try reconnecting Outlook Email.');
+  const payload = { comment: body };
+  const messageOverrides = {};
+  if(to) messageOverrides.toRecipients = [{ emailAddress: { address: to } }];
+  if(subject) messageOverrides.subject = subject;
+  if(Object.keys(messageOverrides).length) payload.message = messageOverrides;
+
+  const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${messageId}/reply`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok){
+    const errText = await res.text();
+    throw new Error(`Outlook reply failed (${res.status}): ${errText.slice(0,150)}`);
+  }
+}
+
+async function sendEmailFromModal(){
+  const to = document.getElementById('emailTo').value.trim();
+  const subject = document.getElementById('emailSubject').value.trim();
+  const body = document.getElementById('emailBody').value.trim();
+  const errEl = document.getElementById('emailModalError');
+  const btn = document.getElementById('emailSendBtn');
+  errEl.textContent = '';
+
+  if(!to || !body){
+    errEl.textContent = 'Please fill in the recipient and a message.';
+    return;
+  }
+
+  const provider = document.getElementById('emailProvider').value ||
+    (gmailAccessToken ? 'gmail' : (msalInstance.getActiveAccount() ? 'outlook' : ''));
+
+  if(!provider){
+    errEl.textContent = 'Connect Gmail or Outlook Email from the top nav first.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try{
+    const attachments = await getSelectedAttachments();
+    if(emailModalMode === 'reply' && emailModalReplyTarget && emailModalReplyTarget.source === 'Outlook'){
+      if(attachments.length){
+        errEl.textContent = 'Attachments on Outlook replies aren\'t supported yet — try Compose instead for a new email with a file attached.';
+        btn.disabled = false;
+        btn.textContent = 'Send';
+        return;
+      }
+      await replyToOutlookMessage(emailModalReplyTarget.id, body, { to, subject });
+    } else if(provider === 'gmail'){
+      await sendGmailMessage({ to, subject, body, replyTo: emailModalMode === 'reply' ? emailModalReplyTarget : null, attachments });
+    } else {
+      await sendOutlookMessage({ to, subject, body, attachments });
+    }
+    closeEmailModal();
+    alert('Email sent!');
+  }catch(err){
+    errEl.textContent = err.message;
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  }
+}
+
+async function deleteEmailMessage(msg){
+  if(!confirm('Delete this email? It will move to Trash / Deleted Items.')) return;
+  try{
+    if(msg.source === 'Gmail'){
+      const res = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${msg.id}/trash`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${gmailAccessToken}` }
+      });
+      if(!res.ok) throw new Error('Gmail delete failed (' + res.status + ')');
+      gmailMessages = gmailMessages.filter(m => m.id !== msg.id);
+    } else {
+      const token = await getOutlookMailToken();
+      if(!token) throw new Error('Could not get an Outlook access token.');
+      const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${msg.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if(!res.ok) throw new Error('Outlook delete failed (' + res.status + ')');
+      outlookMessages = outlookMessages.filter(m => m.id !== msg.id);
+    }
+    renderInboxPanel();
+  }catch(err){
+    alert('Could not delete: ' + err.message);
+  }
+}
+/* ---------- end Compose / Reply / Delete ---------- */
+
+async function signUp(){
+  const name = document.getElementById('authName').value.trim();
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authError');
+  errEl.style.color = '#dc2626';
+  errEl.textContent = '';
+  if(!email || !password){ errEl.textContent = 'Enter an email and password.'; return; }
+  const btn = event ? event.target : null;
+  if(btn) btn.disabled = true;
+  errEl.textContent = 'Creating account...';
+  try{
+    const signUpOptions = { email, password };
+    if(name) signUpOptions.options = { data: { display_name: name } };
+    const { data, error } = await sb.auth.signUp(signUpOptions);
+    if(error){ errEl.textContent = error.message; return; }
+    if(data.user && !data.session){
+      errEl.style.color = 'var(--success)';
+      errEl.textContent = 'Account created! Check your email to confirm, then log in.';
+      return;
+    }
+    await onLoggedIn(data.user);
+    errEl.textContent = '';
+  }catch(e){
+    errEl.textContent = 'Connection problem — check your signal/WiFi and try again.';
+  }finally{
+    if(btn) btn.disabled = false;
+  }
+}
+
+async function signIn(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authError');
+  errEl.style.color = '#dc2626';
+  errEl.textContent = '';
+  if(!email || !password){ errEl.textContent = 'Enter an email and password.'; return; }
+  const btn = event ? event.target : null;
+  if(btn) btn.disabled = true;
+  errEl.textContent = 'Logging in...';
+  try{
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if(error){ errEl.textContent = error.message; return; }
+    await onLoggedIn(data.user);
+    errEl.textContent = '';
+  }catch(e){
+    errEl.textContent = 'Connection problem — check your signal/WiFi and try again.';
+  }finally{
+    if(btn) btn.disabled = false;
+  }
+}
+
+async function onLoggedIn(user){
+  currentUser = user;
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('mainHeader').style.display = '';
+  document.getElementById('mainNav').style.display = '';
+  document.getElementById('mainContent').style.display = '';
+  applyBossAccessControls();
+  updateLoggedInAsText();
+  loadProfilePic();
+  maybeShowDisclaimer();
+  try{
+    await loadAllData();
+  }catch(e){ /* Non-fatal — app stays usable even if data load hiccups */ }
+  try{
+    await ensureMsalReady();
+    await tryGoogleSilentReconnect();
+    await tryGmailSilentReconnect();
+    await tryLoadOutlookMail();
+  }catch(e){ /* Non-fatal — email/calendar integrations are optional at this point */ }
+  if(sessionStorage.getItem('bossGoToEmailTab') === '1'){
+    sessionStorage.removeItem('bossGoToEmailTab');
+    if(isBossAdmin()) switchTab('email');
+  }
+}
+
+let events = [];
+
+async function checkExistingSession(){
+  const { data } = await sb.auth.getSession();
+  if(data.session && data.session.user){
+    await onLoggedIn(data.session.user);
+  } else {
+    await ensureMsalReady();
+  }
+}
+checkExistingSession();
+
+async function loadAllData(){
+  const [tripsRes, receiptsRes, remindersRes, eventsRes] = await Promise.all([
+    sb.from('trips').select('*').order('trip_date', {ascending:false}),
+    sb.from('receipts').select('*').order('receipt_date', {ascending:false}),
+    sb.from('reminders').select('*').order('due_date', {ascending:true}),
+    sb.from('calendar_events').select('*').order('event_date', {ascending:true})
+  ]);
+  trips = tripsRes.data || [];
+  receipts = receiptsRes.data || [];
+  reminders = remindersRes.data || [];
+  events = eventsRes.data || [];
+  renderTrips();
+  renderReceipts();
+  renderReminders();
+  renderEvents();
+  updateStats();
+  await Promise.all([loadPerks(), loadStickyNotes()]);
+  renderPerks();
+  renderStickyNotes();
+}
+
+async function addEvent(){
+  const title = document.getElementById('eventTitle').value.trim();
+  const date = document.getElementById('eventDate').value;
+  const notes = document.getElementById('eventNotes').value.trim();
+  const wantGoogle = document.getElementById('eventSyncGoogle').checked;
+  const wantOutlook = document.getElementById('eventSyncOutlook').checked;
+  if(!title || !date){
+    alert('Please enter a title and date.');
+    return;
+  }
+  const { data: inserted, error } = await sb.from('calendar_events').insert({
+    user_id: currentUser.id, title, event_date: date, notes: notes || null
+  }).select().single();
+  if(error){ alert('Could not save event: ' + error.message); return; }
+
+  markEventAsPushed(title, date);
+
+  let syncedGoogle = false;
+  let syncedOutlook = false;
+  const pushErrors = [];
+  if(wantGoogle && googleAccessToken){
+    try{ await pushEventToGoogle(title, date, notes); syncedGoogle = true; }
+    catch(err){ pushErrors.push('Google: ' + err.message); }
+  }
+  if(wantOutlook && msalInstance.getActiveAccount()){
+    try{ await pushEventToOutlook(title, date, notes); syncedOutlook = true; }
+    catch(err){ pushErrors.push('Outlook: ' + err.message); }
+  }
+
+  if(inserted && inserted.id){
+    await sb.from('calendar_events')
+      .update({ synced_google: syncedGoogle, synced_outlook: syncedOutlook })
+      .eq('id', inserted.id);
+  }
+
+  if(pushErrors.length){
+    alert('Event saved in Boss, but could not sync to: ' + pushErrors.join(' | '));
+  }
+
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('eventNotes').value = '';
+  await loadAllData();
+  await loadGoogleEvents();
+  await loadOutlookEvents();
+}
+
+async function pushEventToGoogle(title, date, notes, time){
+  const t = time || '09:00';
+  const [h, m] = t.split(':');
+  const endH = String((parseInt(h,10) + (parseInt(m,10) >= 30 ? 1 : 0)) % 24).padStart(2,'0');
+  const endM = parseInt(m,10) >= 30 ? String(parseInt(m,10)-30).padStart(2,'0') : String(parseInt(m,10)+30).padStart(2,'0');
+  const body = {
+    summary: title,
+    description: notes || '',
+    start: { dateTime: `${date}T${t}:00`, timeZone: 'America/Los_Angeles' },
+    end: { dateTime: `${date}T${endH}:${endM}:00`, timeZone: 'America/Los_Angeles' },
+    reminders: {
+      useDefault: false,
+      overrides: [{ method: 'popup', minutes: 0 }]
+    }
+  };
+  const res = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${googleAccessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const errText = await res.text();
+    throw new Error(`(${res.status}) ${errText.slice(0,150)}`);
+  }
+}
+
+async function pushEventToOutlook(title, date, notes, time){
+  const token = await getGraphToken();
+  if(!token) throw new Error('no valid token — try reconnecting Outlook');
+  const t = time || '09:00';
+  const [h, m] = t.split(':');
+  const endH = String((parseInt(h,10) + (parseInt(m,10) >= 30 ? 1 : 0)) % 24).padStart(2,'0');
+  const endM = parseInt(m,10) >= 30 ? String(parseInt(m,10)-30).padStart(2,'0') : String(parseInt(m,10)+30).padStart(2,'0');
+  const body = {
+    subject: title,
+    body: { contentType: 'Text', content: notes || '' },
+    start: { dateTime: `${date}T${t}:00`, timeZone: 'America/Los_Angeles' },
+    end: { dateTime: `${date}T${endH}:${endM}:00`, timeZone: 'America/Los_Angeles' },
+    isAllDay: false,
+    isReminderOn: true,
+    reminderMinutesBeforeStart: 0
+  };
+  const res = await fetch('https://graph.microsoft.com/v1.0/me/events', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    const errText = await res.text();
+    throw new Error(`(${res.status}) ${errText.slice(0,150)}`);
+  }
+}
+
+function markEventAsPushed(title, date){
+  try{
+    const key = 'pushedEvents';
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    existing.push(`${title.trim().toLowerCase()}|${date}`);
+    localStorage.setItem(key, JSON.stringify(existing));
+  }catch(err){ console.error('Could not save pushed event marker:', err); }
+}
+
+function getPushedEventKeys(){
+  try{
+    return new Set(JSON.parse(localStorage.getItem('pushedEvents') || '[]'));
+  }catch(err){ return new Set(); }
+}
+
+function dedupeEvents(rawEvents){
+  const pushedKeys = getPushedEventKeys();
+  return rawEvents.filter(e => {
+    if(e.source !== 'outlook' && e.source !== 'google') return true;
+    const key = `${(e.title||'').trim().toLowerCase()}|${e.event_date}`;
+    return !pushedKeys.has(key);
+  });
+}
+
+/**
+ * Works out what color/badges an event should show.
+ * - Events fetched directly from Outlook or Google (e.source set) always show
+ *   their platform color — these live natively on that calendar.
+ * - Events created in Boss (no e.source) are colored based on whether the
+ *   sync to each platform actually succeeded (synced_outlook / synced_google),
+ *   not just whether the account happens to be connected right now.
+ */
+function getEventSyncInfo(e){
+  if(e.source === 'outlook') return { color: '#3b5bdb', labels: ['Outlook'] };
+  if(e.source === 'google') return { color: '#34a853', labels: ['Google'] };
+
+  const syncedOutlook = !!e.synced_outlook;
+  const syncedGoogle = !!e.synced_google;
+
+  if(syncedOutlook && syncedGoogle){
+    return { color: 'linear-gradient(90deg, #3b5bdb 50%, #34a853 50%)', labels: ['Outlook', 'Google'] };
+  }
+  if(syncedOutlook) return { color: '#3b5bdb', labels: ['Outlook'] };
+  if(syncedGoogle) return { color: '#34a853', labels: ['Google'] };
+  return { color: '#6d5ce7', labels: ['Boss only'] };
+}
+
+function formatDateShort(dateStr){
+  if(!dateStr) return '';
+  const parts = dateStr.split('-');
+  if(parts.length !== 3) return dateStr;
+  const [y, m, d] = parts;
+  return `${parseInt(m, 10)}-${parseInt(d, 10)}-${y.slice(2)}`;
+}
+
+function renderEventRow(e, showDate, idx){
+  const info = getEventSyncInfo(e);
+  const swatches = info.labels.map(l => {
+    const swatchColor = l === 'Outlook' ? '#3b5bdb' : l === 'Google' ? '#34a853' : '#6d5ce7';
+    const icon = l === 'Outlook' ? outlookIconSvg(14) : l === 'Google' ? googleCalIconSvg(14) : '';
+    return `<span style="display:inline-flex;align-items:center;gap:5px;margin-right:12px;">
+      <span style="width:11px;height:11px;border-radius:3px;background:${swatchColor};display:inline-block;flex-shrink:0;"></span>
+      ${icon}
+      <span style="font-weight:700;font-size:12px;">${l}</span>
+    </span>`;
+  }).join('');
+  const isClickable = typeof idx === 'number';
+  const clickAttr = isClickable ? ` onclick="openEditEventModal(${idx})"` : '';
+  const clickableClass = isClickable ? ' clickable' : '';
+  const editHint = isClickable ? '<span style="font-size:10.5px;color:var(--text-muted);font-weight:500;display:block;margin-top:3px;">✏️ Tap to edit</span>' : '';
+  return `
+    <div class="event-card${clickableClass}"${clickAttr}>
+      ${showDate !== false ? `<div class="event-date">${formatDateShort(e.event_date)}</div>` : ''}
+      <div class="event-body">
+        <div>${e.title}</div>
+        <div style="display:flex;flex-wrap:wrap;margin-top:5px;">${swatches}</div>
+        ${e.notes ? `<div class="meta" style="font-style:italic;margin-top:5px;">${e.notes}</div>` : ''}
+        ${e.photo_url ? `<img src="${e.photo_url}" onclick="event.stopPropagation(); window.open('${e.photo_url}','_blank')" style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-top:6px;cursor:pointer;">` : ''}
+        ${editHint}
+      </div>
+    </div>
+  `;
+}
+
+function outlookIconSvg(size){
+  size = size || 14;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="flex-shrink:0;display:block;"><rect width="24" height="24" rx="4" fill="#0364B8"/><rect x="4" y="6" width="16" height="12" rx="1" fill="none" stroke="white" stroke-width="1.5"/><path d="M4 7.5l8 5.5 8-5.5" stroke="white" stroke-width="1.5" fill="none"/></svg>`;
+}
+
+function googleCalIconSvg(size){
+  size = size || 14;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="flex-shrink:0;display:block;"><rect x="2" y="3" width="20" height="19" rx="2" fill="white" stroke="#dadce0"/><rect x="2" y="3" width="20" height="5" fill="#4285F4"/><rect x="2" y="8.5" width="9" height="6.75" fill="#EA4335"/><rect x="13" y="8.5" width="9" height="6.75" fill="#34A853"/><rect x="2" y="15.5" width="9" height="6.5" fill="#FBBC05"/><rect x="13" y="15.5" width="9" height="6.5" fill="#4285F4"/></svg>`;
+}
+
+function gmailIconSvg(size){
+  size = size || 20;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="flex-shrink:0;display:block;"><rect x="2" y="5" width="20" height="14" rx="2" fill="white" stroke="#e0e0e0"/><path d="M2 6.2l10 7 10-7" fill="none" stroke="#EA4335" stroke-width="2"/><path d="M2 6v12h3.6V9.2z" fill="#EA4335"/><path d="M22 6v12h-3.6V9.2z" fill="#EA4335"/></svg>`;
+}
+
+function monthLabelFor(dateStr){
+  if(!dateStr) return '';
+  const [y, m] = dateStr.split('-').map(Number);
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${monthNames[m - 1]} ${y}`;
+}
+
+function renderEvents(){
+  const list = document.getElementById('eventList');
+  const combined = dedupeEvents([...events, ...outlookEvents, ...googleEvents])
+    .sort((a, b) => (a.event_date || '').localeCompare(b.event_date || ''));
+  window.__upcomingEvents = combined;
+  if(combined.length === 0){
+    list.innerHTML = '<div class="empty-state">No events scheduled yet.</div>';
+  } else {
+    let html = '';
+    let lastMonth = null;
+    combined.forEach((e, idx) => {
+      const monthLabel = monthLabelFor(e.event_date);
+      if(monthLabel && monthLabel !== lastMonth){
+        html += `<div style="grid-column:1 / -1;font-weight:800;color:var(--violet);font-size:13px;margin:${lastMonth ? '10px' : '0'} 0 2px;">${monthLabel}</div>`;
+        lastMonth = monthLabel;
+      }
+      html += renderEventRow(e, true, idx);
+    });
+    list.innerHTML = html;
+  }
+  renderCalendarGrid();
+}
+
+let editEventCurrent = null;
+
+function openEditEventModal(idx){
+  const e = window.__upcomingEvents ? window.__upcomingEvents[idx] : null;
+  if(!e) return;
+  editEventCurrent = e;
+
+  const noticeEl = document.getElementById('editEventExternalNotice');
+  const saveBtn = document.getElementById('editEventSaveBtn');
+  const titleInput = document.getElementById('editEventTitle');
+  const dateInput = document.getElementById('editEventDate');
+  const notesInput = document.getElementById('editEventNotes');
+
+  titleInput.value = e.title || '';
+  dateInput.value = e.event_date || '';
+  notesInput.value = e.notes || '';
+
+  if(e.source === 'outlook' || e.source === 'google'){
+    // External events: editing in place isn't supported by this quick form,
+    // but deleting from that calendar is.
+    noticeEl.style.display = 'block';
+    noticeEl.textContent = `This event lives on your ${e.source === 'outlook' ? 'Outlook' : 'Google'} calendar. You can delete it here, but editing isn't available for events synced in from outside Boss yet.`;
+    titleInput.disabled = true;
+    dateInput.disabled = true;
+    notesInput.disabled = true;
+    saveBtn.style.display = 'none';
+  } else {
+    noticeEl.style.display = 'none';
+    titleInput.disabled = false;
+    dateInput.disabled = false;
+    notesInput.disabled = false;
+    saveBtn.style.display = '';
+  }
+
+  document.getElementById('editEventModal').style.display = 'flex';
+}
+
+function closeEditEventModal(){
+  document.getElementById('editEventModal').style.display = 'none';
+  editEventCurrent = null;
+}
+
+async function saveEventEdit(){
+  if(!editEventCurrent || !editEventCurrent.id) return;
+  const title = document.getElementById('editEventTitle').value.trim();
+  const date = document.getElementById('editEventDate').value;
+  const notes = document.getElementById('editEventNotes').value.trim();
+  if(!title || !date){
+    alert('Please enter a title and date.');
+    return;
+  }
+  const { error } = await sb.from('calendar_events')
+    .update({ title, event_date: date, notes: notes || null })
+    .eq('id', editEventCurrent.id);
+  if(error){ alert('Could not update event: ' + error.message); return; }
+  closeEditEventModal();
+  await loadAllData();
+  renderEvents();
+  if(dayModalCurrentDate && document.getElementById("dayEventsModal").style.display !== "none") openDayEventsModal(dayModalCurrentDate);
+}
+
+async function deleteEventFromEditModal(){
+  const e = editEventCurrent;
+  if(!e) return;
+  if(!confirm('Delete this event?')) return;
+
+  try{
+    if(e.source === 'outlook'){
+      const token = await getGraphToken();
+      if(!token) throw new Error('Could not get an Outlook token. Try reconnecting Outlook Calendar.');
+      const res = await fetch(`https://graph.microsoft.com/v1.0/me/events/${e.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if(!res.ok) throw new Error('Outlook delete failed (' + res.status + ')');
+      outlookEvents = outlookEvents.filter(x => x.id !== e.id);
+    } else if(e.source === 'google'){
+      if(!googleAccessToken) throw new Error('Google Calendar isn\'t connected. Try reconnecting it.');
+      const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${e.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${googleAccessToken}` }
+      });
+      if(!res.ok && res.status !== 410) throw new Error('Google delete failed (' + res.status + ')');
+      googleEvents = googleEvents.filter(x => x.id !== e.id);
+    } else {
+      const { error } = await sb.from('calendar_events').delete().eq('id', e.id);
+      if(error) throw new Error(error.message);
+      await loadAllData();
+    }
+    closeEditEventModal();
+    renderEvents();
+    if(dayModalCurrentDate && document.getElementById("dayEventsModal").style.display !== "none") openDayEventsModal(dayModalCurrentDate);
+  }catch(err){
+    alert('Could not delete: ' + err.message);
+  }
+}
+
+let calendarViewDate = new Date();
+
+function changeCalendarMonth(delta){
+  calendarViewDate.setMonth(calendarViewDate.getMonth() + delta);
+  renderCalendarGrid();
+}
+
+function renderCalendarGrid(){
+  const gridEl = document.getElementById('calendarGrid');
+  const labelEl = document.getElementById('calendarMonthLabel');
+  if(!gridEl || !labelEl) return;
+
+  const year = calendarViewDate.getFullYear();
+  const month = calendarViewDate.getMonth();
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  labelEl.textContent = `${monthNames[month]} ${year}`;
+
+  const combined = dedupeEvents([...events, ...outlookEvents, ...googleEvents]);
+  const eventsByDate = {};
+  combined.forEach(e => {
+    if(!e.event_date) return;
+    (eventsByDate[e.event_date] = eventsByDate[e.event_date] || []).push(e);
+  });
+
+  const firstOfMonth = new Date(year, month, 1);
+  const startDay = firstOfMonth.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:4px;">';
+  ['S','M','T','W','T','F','S'].forEach(d => html += `<div>${d}</div>`);
+  html += '</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+
+  for(let i = 0; i < startDay; i++){
+    html += '<div></div>';
+  }
+  for(let day = 1; day <= daysInMonth; day++){
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const dayEvents = eventsByDate[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const cellCursor = 'cursor:pointer;';
+    const cellClick = ` onclick="openDayEventsModal('${dateStr}')"`;
+    html += `<div style="height:52px;overflow:hidden;border:1px solid var(--border-color, #e5e5e5);border-radius:6px;padding:3px;${cellCursor}${isToday ? 'background:#f0f0ff;border-color:#6d5ce7;' : ''}"${cellClick}>
+      <div style="font-size:10px;font-weight:${isToday ? '700' : '500'};margin-bottom:1px;">${day}</div>
+      ${dayEvents.slice(0,1).map(e => {
+        const info = getEventSyncInfo(e);
+        return `<div title="${e.title} (${info.labels.join(' + ')})" style="font-size:8px;background:${info.color};color:white;border-radius:2px;padding:0px 2px;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.title}</div>`;
+      }).join('')}
+      ${dayEvents.length > 1 ? `<div style="font-size:8px;color:var(--text-muted);">+${dayEvents.length - 1} more</div>` : ''}
+    </div>`;
+  }
+  html += '</div>';
+  gridEl.innerHTML = html;
+}
+
+let dayModalCurrentDate = null;
+
+function openDayEventsModal(dateStr){
+  dayModalCurrentDate = dateStr;
+  const combined = dedupeEvents([...events, ...outlookEvents, ...googleEvents])
+    .filter(e => e.event_date === dateStr);
+  const modal = document.getElementById('dayEventsModal');
+  const titleEl = document.getElementById('dayEventsModalTitle');
+  const listEl = document.getElementById('dayEventsModalList');
+
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const niceDate = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  titleEl.textContent = niceDate;
+
+  window.__upcomingEvents = combined;
+  listEl.innerHTML = combined.map((e, idx) => renderEventRow(e, false, idx)).join('') || '<div class="empty-state">No events this day yet.</div>';
+
+  document.getElementById('dayModalEventTitle').value = '';
+  document.getElementById('dayModalEventNotes').value = '';
+  document.getElementById('dayModalEventTime').value = '09:00';
+  document.getElementById('dayModalEventPhoto').value = '';
+  document.getElementById('dayModalSyncGoogle').checked = true;
+  document.getElementById('dayModalSyncOutlook').checked = true;
+
+  modal.style.display = 'flex';
+}
+
+async function addEventFromDayModal(){
+  const title = document.getElementById('dayModalEventTitle').value.trim();
+  const notes = document.getElementById('dayModalEventNotes').value.trim();
+  const time = document.getElementById('dayModalEventTime').value || '09:00';
+  const photoInput = document.getElementById('dayModalEventPhoto');
+  const photoFile = photoInput && photoInput.files && photoInput.files[0];
+  const wantGoogle = document.getElementById('dayModalSyncGoogle').checked;
+  const wantOutlook = document.getElementById('dayModalSyncOutlook').checked;
+  if(!title || !dayModalCurrentDate){
+    alert('Please enter a title.');
+    return;
+  }
+  const { data: inserted, error } = await sb.from('calendar_events').insert({
+    user_id: currentUser.id, title, event_date: dayModalCurrentDate, notes: notes || null
+  }).select().single();
+  if(error){ alert('Could not save event: ' + error.message); return; }
+
+  if(photoFile && inserted && inserted.id){
+    const ext = photoFile.name.split('.').pop();
+    const path = `${currentUser.id}/event-${inserted.id}-${Date.now()}.${ext}`;
+    const { error: uploadError } = await sb.storage.from('boss-photos').upload(path, photoFile);
+    if(uploadError){
+      alert('Event saved, but the photo could not be uploaded: ' + uploadError.message);
+    } else {
+      const { data: urlData } = sb.storage.from('boss-photos').getPublicUrl(path);
+      await sb.from('calendar_events').update({ photo_url: urlData.publicUrl }).eq('id', inserted.id);
+    }
+  }
+
+  markEventAsPushed(title, dayModalCurrentDate);
+
+  let syncedGoogle = false;
+  let syncedOutlook = false;
+  const pushErrors = [];
+  if(wantGoogle){
+    if(googleAccessToken){
+      try{ await pushEventToGoogle(title, dayModalCurrentDate, notes, time); syncedGoogle = true; }
+      catch(err){ pushErrors.push('Google: ' + err.message); }
+    } else {
+      pushErrors.push('Google: not connected — connect it first in the Calendar tab');
+    }
+  }
+  if(wantOutlook){
+    if(msalInstance.getActiveAccount()){
+      try{ await pushEventToOutlook(title, dayModalCurrentDate, notes, time); syncedOutlook = true; }
+      catch(err){ pushErrors.push('Outlook: ' + err.message); }
+    } else {
+      pushErrors.push('Outlook: not connected — connect it first in the Calendar tab');
+    }
+  }
+
+  if(inserted && inserted.id){
+    await sb.from('calendar_events')
+      .update({ synced_google: syncedGoogle, synced_outlook: syncedOutlook })
+      .eq('id', inserted.id);
+  }
+  if(pushErrors.length){
+    alert('Saved in Boss, but the calendar alert could not be created:\n\n' + pushErrors.join('\n'));
+  }
+
+  if(pushErrors.length){
+    alert('Event saved in Boss, but could not sync to: ' + pushErrors.join(' | '));
+  }
+
+  await loadAllData();
+  renderCalendarGrid();
+  openDayEventsModal(dayModalCurrentDate);
+}
+
+function closeDayEventsModal(){
+  document.getElementById('dayEventsModal').style.display = 'none';
+}
+
+const PROVIDER_COLORS = { Gmail: '#34a853', Outlook: '#3b5bdb' };
+
+function renderInboxPanel(opts){
+  opts = opts || {};
+  const list = document.getElementById('emailListPane');
+  if(!list) return;
+
+  if(!opts.keepSearch) emailSearchQuery = '';
+
+  let combined = [
+    ...gmailMessages.map(m => ({ ...m, source: 'Gmail' })),
+    ...outlookMessages.map(m => ({ ...m, source: 'Outlook' }))
+  ].filter(m => {
+    if(currentEmailProvider === 'gmail') return m.source === 'Gmail';
+    if(currentEmailProvider === 'outlook') return m.source === 'Outlook';
+    return true;
+  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const q = emailSearchQuery.trim().toLowerCase();
+  if(q){
+    combined = combined.filter(m => {
+      const subject = (m.subject || '').toLowerCase();
+      const from = (m.from || '').toLowerCase();
+      const snippet = (m.snippet || '').toLowerCase();
+      return subject.includes(q) || from.includes(q) || snippet.includes(q);
+    });
+  }
+
+  if(activeEmailFilters.has('unread')) combined = combined.filter(m => m.isUnread);
+  if(activeEmailFilters.has('flagged')) combined = combined.filter(m => m.isFlagged);
+  if(activeEmailFilters.has('attachments')) combined = combined.filter(m => m.hasAttachments);
+
+  window.__inboxMessages = combined;
+  selectedEmailIdx = null;
+  const readingPane = document.getElementById('emailReadingPane');
+  if(readingPane) readingPane.innerHTML = '<div class="empty-state" style="padding:40px 20px;">Select a message on the left to read it here.</div>';
+
+  if(combined.length === 0){
+    if(q || activeEmailFilters.size){
+      const safeQuery = emailSearchQuery.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const reasonBits = [];
+      if(q) reasonBits.push(`"${safeQuery}"`);
+      if(activeEmailFilters.size) reasonBits.push(Array.from(activeEmailFilters).join(' + ') + ' filter');
+      list.innerHTML = `<div class="empty-state" style="padding:24px 18px;">No messages match ${reasonBits.join(' and ')} in this folder/account. Try a different search, clear the filters, or check another folder or account tab.</div>`;
+    } else {
+      list.innerHTML = '<div class="empty-state" style="padding:24px 18px;">No messages here yet. Connect Gmail or Outlook Email from the top nav, or try a different folder/account tab.</div>';
+    }
+    return;
+  }
+
+  list.innerHTML = combined.map((m, idx) => {
+    const icon = m.source === 'Gmail' ? gmailIconSvg(16) : outlookIconSvg(16);
+    const dateLabel = m.date ? new Date(m.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '';
+    const color = PROVIDER_COLORS[m.source] || 'var(--text-muted)';
+    const fromName = (m.from || '').replace(/<.*>/, '').replace(/"/g, '').trim() || m.from || '(unknown sender)';
+    const unreadDot = m.isUnread ? '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#6d28d9;margin-right:5px;flex-shrink:0;"></span>' : '';
+    const flagIcon = m.isFlagged ? '🚩 ' : '';
+    const clipIcon = m.hasAttachments ? '📎 ' : '';
+    return `
+      <div class="email-list-row" data-idx="${idx}" onclick="selectEmailMessage(${idx})">
+        <div style="flex-shrink:0;margin-top:2px;">${icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+            <strong style="font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;">${unreadDot}${fromName}</strong>
+            <span style="font-size:11.5px;color:${color};font-weight:700;flex-shrink:0;">${dateLabel}</span>
+          </div>
+          <div style="font-size:12.5px;font-weight:${m.isUnread ? 700 : 600};color:var(--text);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${flagIcon}${clipIcon}${m.subject}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.snippet}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+let selectedEmailIdx = null;
+
+function htmlToText(html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  // Strip elements whose text content should never be shown to the user —
+  // <style> and <script> blocks are common in marketing/HTML emails and
+  // textContent would otherwise include their raw CSS/JS as visible text.
+  div.querySelectorAll('style, script, head').forEach(el => el.remove());
+
+  // Preserve basic line structure so paragraphs/breaks don't run together.
+  div.querySelectorAll('br').forEach(el => el.replaceWith('\n'));
+  div.querySelectorAll('p, div, tr, li, h1, h2, h3, h4, h5, h6').forEach(el => {
+    el.append('\n');
+  });
+
+  const text = div.textContent || div.innerText || '';
+  // Collapse excess blank lines and trailing/leading whitespace per line.
+  return text
+    .split('\n')
+    .map(line => line.replace(/[ \t]+/g, ' ').trim())
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function base64UrlDecode(str){
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+  while(str.length % 4) str += '=';
+  try{
+    return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+  }catch(e){
+    return atob(str);
+  }
+}
+
+function findGmailBodyPart(payload){
+  if(!payload) return null;
+  if(payload.mimeType === 'text/plain' && payload.body && payload.body.data){
+    return { type: 'text', data: payload.body.data };
+  }
+  if(payload.mimeType === 'text/html' && payload.body && payload.body.data){
+    return { type: 'html', data: payload.body.data };
+  }
+  if(payload.parts){
+    let htmlFallback = null;
+    for(const part of payload.parts){
+      const found = findGmailBodyPart(part);
+      if(found){
+        if(found.type === 'text') return found;
+        if(found.type === 'html' && !htmlFallback) htmlFallback = found;
+      }
+    }
+    return htmlFallback;
+  }
+  return null;
+}
+
+async function fetchGmailMessageBody(id){
+  const res = await fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`, {
+    headers: { Authorization: `Bearer ${gmailAccessToken}` }
+  });
+  if(!res.ok) throw new Error('Could not load this message.');
+  const data = await res.json();
+  const part = findGmailBodyPart(data.payload);
+  if(!part) return data.snippet || '';
+  const decoded = base64UrlDecode(part.data);
+  return part.type === 'html' ? htmlToText(decoded) : decoded;
+}
+
+async function fetchOutlookMessageBody(id){
+  const token = await getOutlookMailToken();
+  if(!token) throw new Error('Could not get an Outlook access token.');
+  const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}?$select=body`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if(!res.ok) throw new Error('Could not load this message.');
+  const data = await res.json();
+  const body = data.body || {};
+  return body.contentType === 'html' ? htmlToText(body.content || '') : (body.content || '');
+}
+
+function parseUnsubscribeUrl(headerValue){
+  if(!headerValue) return '';
+  const httpMatch = headerValue.match(/<(https?:\/\/[^>]+)>/i);
+  if(httpMatch) return httpMatch[1];
+  const mailtoMatch = headerValue.match(/<(mailto:[^>]+)>/i);
+  if(mailtoMatch) return mailtoMatch[1];
+  return '';
+}
+
+function handleUnsubscribeClick(url){
+  if(!url) return;
+  if(url.toLowerCase().startsWith('mailto:')){
+    if(confirm('This sender unsubscribes by email. Open your email app to send the unsubscribe request?')){
+      window.location.href = url;
+    }
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+async function selectEmailMessage(idx){
+  selectedEmailIdx = idx;
+  document.querySelectorAll('.email-list-row').forEach(row => {
+    row.classList.toggle('selected', Number(row.dataset.idx) === idx);
+  });
+  const msg = window.__inboxMessages[idx];
+  const pane = document.getElementById('emailReadingPane');
+  if(!msg || !pane) return;
+
+  // On mobile, the reading pane sits below the message list, so auto-scroll
+  // to it once content loads — otherwise tapping a message looks like nothing happened.
+  if(window.innerWidth <= 780){
+    setTimeout(() => { pane.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+  }
+
+  const color = PROVIDER_COLORS[msg.source] || 'var(--text-muted)';
+  const dateFull = msg.date ? new Date(msg.date).toLocaleString() : '';
+  const unsubUrl = parseUnsubscribeUrl(msg.unsubscribe);
+  const unsubBtn = unsubUrl
+    ? `<button type="button" style="width:auto;padding:8px 16px;font-size:13px;border-radius:8px;border:1px solid var(--border);background:#fff;color:var(--text-muted);cursor:pointer;font-weight:600;" onclick="handleUnsubscribeClick('${unsubUrl.replace(/'/g, "\\'")}')">🚫 Unsubscribe</button>`
+    : '';
+
+  pane.innerHTML = `
+    <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px;">${msg.subject}</div>
+    <div style="font-size:13px;color:var(--text);margin-bottom:2px;"><strong>${(msg.from || '').replace(/"/g,'')}</strong></div>
+    <div style="font-size:12.5px;color:${color};font-weight:700;margin-bottom:12px;">${msg.source} · ${dateFull}</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button type="button" style="width:auto;padding:8px 16px;font-size:13px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;font-weight:600;" onclick="openReplyModal(window.__inboxMessages[${idx}])">↩️ Reply</button>
+      <button type="button" style="width:auto;padding:8px 16px;font-size:13px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;font-weight:600;" onclick="openForwardModal(window.__inboxMessages[${idx}])">➡️ Forward</button>
+      <button type="button" style="width:auto;padding:8px 16px;font-size:13px;border-radius:8px;border:1px solid #f3d5d5;background:#fff;color:#c0392b;cursor:pointer;font-weight:600;" onclick="deleteEmailMessage(window.__inboxMessages[${idx}])">🗑️ Delete</button>
+      ${unsubBtn}
+    </div>
+    <div id="emailBodyContent" style="font-size:14px;color:var(--text);white-space:pre-wrap;line-height:1.6;padding-top:14px;border-top:1px solid var(--border);">Loading message...</div>
+  `;
+
+  try{
+    const bodyText = msg.source === 'Gmail'
+      ? await fetchGmailMessageBody(msg.id)
+      : await fetchOutlookMessageBody(msg.id);
+    const bodyEl = document.getElementById('emailBodyContent');
+    if(bodyEl) bodyEl.textContent = bodyText || msg.snippet || '(No content)';
+  }catch(err){
+    const bodyEl = document.getElementById('emailBodyContent');
+    if(bodyEl) bodyEl.textContent = msg.snippet || 'Could not load the full message.';
+  }
+}
+
+function generateTaxSummary(){
+  const fromDate = document.getElementById('taxFromDate').value;
+  const toDate = document.getElementById('taxToDate').value;
+  const output = document.getElementById('taxSummaryOutput');
+
+  const filteredTrips = trips.filter(t => (!fromDate || t.trip_date >= fromDate) && (!toDate || t.trip_date <= toDate));
+  const filteredReceipts = receipts.filter(r => (!fromDate || r.receipt_date >= fromDate) && (!toDate || r.receipt_date <= toDate));
+
+  const totalMiles = filteredTrips.reduce((sum, t) => sum + Number(t.miles), 0);
+  const mileageDeduction = filteredTrips.reduce((sum, t) => sum + tripDeduction(t), 0);
+
+  const categoryTotals = {};
+  filteredReceipts.forEach(r => {
+    categoryTotals[r.category] = (categoryTotals[r.category] || 0) + Number(r.amount);
+  });
+  const totalReceipts = filteredReceipts.reduce((sum, r) => sum + Number(r.amount), 0);
+  const grandTotal = mileageDeduction + totalReceipts;
+
+  const categoryRows = Object.entries(categoryTotals)
+    .map(([cat, amt]) => `<div class="list-item"><span>${cat}</span><span class="amt">$${amt.toFixed(2)}</span></div>`)
+    .join('');
+
+  output.innerHTML = `
+    <div style="background:#fbfaff;border:1px solid var(--border);border-radius:12px;padding:16px;">
+      <div style="font-weight:700;margin-bottom:10px;">Summary${fromDate || toDate ? ` (${fromDate || 'start'} to ${toDate || 'today'})` : ''}</div>
+      <div class="list-item"><span>Total Miles</span><span class="amt">${totalMiles.toFixed(1)} mi</span></div>
+      <div class="list-item"><span>Mileage Deduction</span><span class="amt">$${mileageDeduction.toFixed(2)}</span></div>
+      ${categoryRows}
+      <div class="list-item"><span>Total Receipts</span><span class="amt">$${totalReceipts.toFixed(2)}</span></div>
+      <div class="list-item" style="border-top:2px solid var(--violet-blue);margin-top:6px;padding-top:10px;">
+        <span style="font-weight:700;">Grand Total Deduction</span>
+        <span class="amt" style="font-size:16px;">$${grandTotal.toFixed(2)}</span>
+      </div>
+    </div>
+    <button class="primary" style="margin-top:12px;" onclick="printTaxSummary()">Print / Save as PDF</button>
+  `;
+}
+
+function printTaxSummary(){
+  window.print();
+}
+
+
+function switchTab(tab){
+  if(BOSS_ADMIN_ONLY_TABS.includes(tab) && blockIfNotAdmin()){
+    return;
+  }
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('nav.tabbar button').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelector('nav.tabbar button[data-tab="' + tab + '"]').classList.add('active');
+}
+
+let gpsWatchId = null;
+let gpsPath = [];
+let gpsStartTime = null;
+let gpsWakeLock = null;
+let gpsHadGap = false;
+
+function haversineMiles(lat1, lon1, lat2, lon2){
+  const R = 3958.8;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+async function acquireGpsWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      gpsWakeLock = await navigator.wakeLock.request('screen');
+      gpsWakeLock.addEventListener('release', () => { gpsWakeLock = null; });
+    }
+  }catch(e){
+    // Wake lock not available/allowed — tracking still works, screen just may lock on its own.
+  }
+}
+
+function releaseGpsWakeLock(){
+  if(gpsWakeLock){
+    gpsWakeLock.release().catch(()=>{});
+    gpsWakeLock = null;
+  }
+}
+
+// Re-acquire the wake lock if the tab regains visibility mid-trip (e.g. screen was manually woken).
+document.addEventListener('visibilitychange', () => {
+  if(gpsWatchId !== null && document.visibilityState === 'visible' && !gpsWakeLock){
+    acquireGpsWakeLock();
+  }
+});
+
+function startGpsTrip(){
+  if(!navigator.geolocation){
+    alert('Your browser doesn\'t support GPS location.');
+    return;
+  }
+  gpsPath = [];
+  gpsStartTime = new Date();
+  gpsHadGap = false;
+  document.getElementById('gpsStartBtn').style.display = 'none';
+  document.getElementById('gpsStopBtn').style.display = '';
+  document.getElementById('gpsStatus').textContent = 'Getting your location...';
+  document.getElementById('gpsAccuracyNote').textContent = '';
+  acquireGpsWakeLock();
+
+  gpsWatchId = navigator.geolocation.watchPosition(
+    (pos) => {
+      const { latitude, longitude, accuracy } = pos.coords;
+      const now = Date.now();
+      // Skip wildly inaccurate fixes (large error radius) so they don't distort the path.
+      if(accuracy != null && accuracy > 75){
+        document.getElementById('gpsAccuracyNote').textContent = 'Weak GPS signal right now — staying outdoors improves accuracy.';
+        return;
+      }
+      // Flag if tracking was silently paused (tab backgrounded) for more than 20 seconds.
+      if(gpsPath.length > 0 && (now - gpsPath[gpsPath.length-1].t) > 20000){
+        gpsHadGap = true;
+      }
+      gpsPath.push({ lat: latitude, lon: longitude, t: now });
+      const miles = calculateGpsMiles();
+      document.getElementById('gpsStatus').textContent = `Tracking... ${miles.toFixed(2)} miles so far`;
+      document.getElementById('gpsAccuracyNote').textContent = gpsHadGap
+        ? '⚠️ Tracking paused briefly (app was backgrounded) — mileage may be short.'
+        : '';
+    },
+    (err) => {
+      document.getElementById('gpsStatus').textContent = 'Location error: ' + err.message;
+    },
+    { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+  );
+}
+
+function calculateGpsMiles(){
+  let total = 0;
+  for(let i = 1; i < gpsPath.length; i++){
+    total += haversineMiles(gpsPath[i-1].lat, gpsPath[i-1].lon, gpsPath[i].lat, gpsPath[i].lon);
+  }
+  return total;
+}
+
+// Snaps the raw GPS trace to the real road/path network so distance follows actual
+// streets and turns instead of straight lines between however many points were captured.
+// Falls back silently to the raw haversine total if the routing service can't be reached
+// or can't match the trace (e.g. too few points, offline, indoor start/end).
+async function snapRouteMiles(path){
+  if(path.length < 2) return null;
+  try{
+    const coords = path.map(p => `${p.lon},${p.lat}`).join(';');
+    const t0 = Math.floor(path[0].t / 1000);
+    const timestamps = path.map(p => Math.floor(p.t / 1000) - t0).join(';');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const url = `https://routing.openstreetmap.de/routed-car/match/v1/driving/${coords}?geometries=geojson&overview=false&timestamps=${timestamps}`;
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if(!res.ok) return null;
+    const data = await res.json();
+    if(data.code !== 'Ok' || !data.matchings || !data.matchings.length) return null;
+    const meters = data.matchings.reduce((sum, m) => sum + m.distance, 0);
+    return meters / 1609.344;
+  }catch(e){
+    return null;
+  }
+}
+
+async function stopGpsTrip(){
+  if(gpsWatchId !== null){
+    navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = null;
+  }
+  releaseGpsWakeLock();
+  const rawMiles = calculateGpsMiles();
+  document.getElementById('gpsStartBtn').style.display = '';
+  document.getElementById('gpsStopBtn').style.display = 'none';
+
+  if(rawMiles <= 0){
+    document.getElementById('gpsStatus').textContent = 'Trip ended — not enough location data was captured.';
+    return;
+  }
+
+  document.getElementById('gpsStatus').textContent = `Trip complete: ${rawMiles.toFixed(2)} miles. Refining route...`;
+  const snapped = await snapRouteMiles(gpsPath);
+  const finalMiles = (snapped != null && snapped > 0) ? snapped : rawMiles;
+
+  document.getElementById('gpsStatus').textContent = `Trip complete: ${finalMiles.toFixed(2)} miles. Add a purpose below and save.`;
+  document.getElementById('gpsAccuracyNote').textContent = gpsHadGap
+    ? '⚠️ Tracking paused during this trip (app was backgrounded) — mileage may still be short. Double-check before saving.'
+    : '';
+
+  document.getElementById('tripMiles').value = finalMiles.toFixed(2);
+  document.getElementById('tripDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('tripPurpose').focus();
+}
+
+async function addTrip(){
+  const date = document.getElementById('tripDate').value;
+  const purpose = document.getElementById('tripPurpose').value.trim();
+  const miles = parseFloat(document.getElementById('tripMiles').value);
+  const tripType = document.getElementById('tripType').value;
+  if(!date || !purpose || !miles || miles <= 0){
+    alert('Please fill in date, purpose, and miles.');
+    return;
+  }
+  const { error } = await sb.from('trips').insert({
+    user_id: currentUser.id, trip_date: date, purpose, miles, trip_type: tripType
+  });
+  if(error){ alert('Could not save trip: ' + error.message); return; }
+  document.getElementById('tripDate').value = '';
+  document.getElementById('tripPurpose').value = '';
+  document.getElementById('tripMiles').value = '';
+  document.getElementById('tripType').value = 'business';
+  await loadAllData();
+}
+
+function renderTrips(){
+  const list = document.getElementById('tripList');
+  if(trips.length === 0){
+    list.innerHTML = '<div class="empty-state">No trips logged yet. Add your first trip above.</div>';
+    return;
+  }
+  list.style.display = 'grid';
+  list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(240px, 1fr))';
+  list.style.gap = '10px';
+  list.innerHTML = trips.map(t => `
+    <div style="display:grid;grid-template-columns:0.65fr 1.35fr;gap:6px;align-items:center;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:#faf9ff;cursor:pointer;" onclick="openEditTripModal('${t.id}')">
+      <div style="font-size:12.5px;font-weight:600;color:var(--teal);">${formatReceiptDate(t.trip_date)}</div>
+      <div>
+        <div style="font-weight:700;font-size:13.5px;color:var(--teal);">${t.purpose || '(No purpose entered)'}</div>
+        <div style="font-weight:600;font-size:12.5px;color:var(--violet);margin-top:2px;">${t.miles} mi <span style="font-weight:600;color:var(--text-muted);">· ${t.trip_type === 'nonprofit' ? 'Nonprofit/Volunteer' : 'Business'}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openEditTripModal(id){
+  const t = trips.find(x => String(x.id) === String(id));
+  if(!t) return;
+  document.getElementById('editTripId').value = t.id;
+  document.getElementById('editTripType').value = t.trip_type === 'nonprofit' ? 'nonprofit' : 'business';
+  document.getElementById('editTripDate').value = t.trip_date || '';
+  document.getElementById('editTripPurpose').value = t.purpose || '';
+  document.getElementById('editTripMiles').value = t.miles || '';
+  document.getElementById('editTripModal').style.display = 'flex';
+}
+
+function closeEditTripModal(){
+  document.getElementById('editTripModal').style.display = 'none';
+}
+
+async function saveTripEdit(){
+  const id = document.getElementById('editTripId').value;
+  const date = document.getElementById('editTripDate').value;
+  const purpose = document.getElementById('editTripPurpose').value.trim();
+  const miles = parseFloat(document.getElementById('editTripMiles').value);
+  const tripType = document.getElementById('editTripType').value;
+  if(!date || !miles || miles <= 0){
+    alert('Please fill in date and miles.');
+    return;
+  }
+  const { error } = await sb.from('trips')
+    .update({ trip_date: date, purpose, miles, trip_type: tripType })
+    .eq('id', id);
+  if(error){ alert('Could not update trip: ' + error.message); return; }
+  closeEditTripModal();
+  await loadAllData();
+}
+
+async function deleteTripFromEditModal(){
+  const id = document.getElementById('editTripId').value;
+  if(!confirm('Delete this trip?')) return;
+  const { error } = await sb.from('trips').delete().eq('id', id);
+  if(error){ alert('Could not delete trip: ' + error.message); return; }
+  closeEditTripModal();
+  await loadAllData();
+}
+
+async function addReceipt(){
+  const date = document.getElementById('receiptDate').value;
+  const vendor = document.getElementById('receiptVendor').value.trim();
+  const category = document.getElementById('receiptCategory').value;
+  const amount = parseFloat(document.getElementById('receiptAmount').value);
+  if(!date || !vendor || !amount || amount <= 0){
+    alert('Please fill in date, vendor, and amount.');
+    return;
+  }
+  const { error } = await sb.from('receipts').insert({
+    user_id: currentUser.id, receipt_date: date, vendor, category, amount
+  });
+  if(error){ alert('Could not save receipt: ' + error.message); return; }
+  document.getElementById('receiptDate').value = '';
+  document.getElementById('receiptVendor').value = '';
+  document.getElementById('receiptAmount').value = '';
+  await loadAllData();
+}
+
+function formatReceiptDate(dateStr){
+  if(!dateStr) return '';
+  const parts = dateStr.split('-');
+  if(parts.length !== 3) return dateStr;
+  const [y, m, d] = parts;
+  return `${parseInt(m, 10)}-${parseInt(d, 10)}-${y}`;
+}
+
+function renderReceipts(){
+  const list = document.getElementById('receiptList');
+  if(receipts.length === 0){
+    list.innerHTML = '<div class="empty-state">No receipts logged yet. Add your first receipt above.</div>';
+    return;
+  }
+  list.style.display = 'grid';
+  list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(240px, 1fr))';
+  list.style.gap = '10px';
+  list.innerHTML = receipts.map(r => `
+    <div style="display:grid;grid-template-columns:0.65fr 1.35fr;gap:6px;align-items:center;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:#faf9ff;cursor:pointer;" onclick="openEditReceiptModal('${r.id}')">
+      <div style="font-size:12.5px;font-weight:600;color:var(--teal);">${formatReceiptDate(r.receipt_date)}</div>
+      <div>
+        <div style="font-weight:700;font-size:13.5px;color:var(--teal);">${r.vendor}</div>
+        <div style="font-weight:600;font-size:12.5px;color:var(--violet);margin-top:2px;">$${Number(r.amount).toFixed(2)} <span style="font-weight:400;color:var(--text-muted);font-size:11px;">· ${r.category}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openEditReceiptModal(id){
+  const r = receipts.find(x => String(x.id) === String(id));
+  if(!r) return;
+  document.getElementById('editReceiptId').value = r.id;
+  document.getElementById('editReceiptDate').value = r.receipt_date || '';
+  document.getElementById('editReceiptVendor').value = r.vendor || '';
+  document.getElementById('editReceiptCategory').value = r.category || 'Supplies';
+  document.getElementById('editReceiptAmount').value = r.amount || '';
+  document.getElementById('editReceiptModal').style.display = 'flex';
+}
+
+function closeEditReceiptModal(){
+  document.getElementById('editReceiptModal').style.display = 'none';
+}
+
+async function saveReceiptEdit(){
+  const id = document.getElementById('editReceiptId').value;
+  const date = document.getElementById('editReceiptDate').value;
+  const vendor = document.getElementById('editReceiptVendor').value.trim();
+  const category = document.getElementById('editReceiptCategory').value;
+  const amount = parseFloat(document.getElementById('editReceiptAmount').value);
+  if(!date || !vendor || !amount || amount <= 0){
+    alert('Please fill in date, vendor, and amount.');
+    return;
+  }
+  const { error } = await sb.from('receipts')
+    .update({ receipt_date: date, vendor, category, amount })
+    .eq('id', id);
+  if(error){ alert('Could not update receipt: ' + error.message); return; }
+  closeEditReceiptModal();
+  await loadAllData();
+}
+
+async function deleteReceiptFromEditModal(){
+  const id = document.getElementById('editReceiptId').value;
+  if(!confirm('Delete this receipt?')) return;
+  const { error } = await sb.from('receipts').delete().eq('id', id);
+  if(error){ alert('Could not delete receipt: ' + error.message); return; }
+  closeEditReceiptModal();
+  await loadAllData();
+}
+
+async function addReminder(){
+  const text = document.getElementById('reminderText').value.trim();
+  const date = document.getElementById('reminderDate').value;
+  if(!text){
+    alert('Please enter a reminder.');
+    return;
+  }
+  const { error } = await sb.from('reminders').insert({
+    user_id: currentUser.id, reminder_text: text, due_date: date || null
+  });
+  if(error){ alert('Could not save reminder: ' + error.message); return; }
+  document.getElementById('reminderText').value = '';
+  document.getElementById('reminderDate').value = '';
+  await loadAllData();
+}
+
+function renderReminders(){
+  const list = document.getElementById('reminderList');
+  if(reminders.length === 0){
+    list.innerHTML = '<div class="empty-state">No reminders yet.</div>';
+    return;
+  }
+  list.style.display = 'grid';
+  list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(240px, 1fr))';
+  list.style.gap = '10px';
+  list.innerHTML = reminders.map(r => `
+    <div style="display:grid;grid-template-columns:0.65fr 1.35fr;gap:6px;align-items:center;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:#faf9ff;cursor:pointer;" onclick="openEditReminderModal('${r.id}')">
+      <div style="font-size:12.5px;font-weight:600;color:var(--teal);">${r.due_date ? formatReceiptDate(r.due_date) : 'No date'}</div>
+      <div style="font-weight:600;font-size:13.5px;color:var(--violet-blue);">${r.reminder_text}</div>
+    </div>
+  `).join('');
+}
+
+function openEditReminderModal(id){
+  const r = reminders.find(x => String(x.id) === String(id));
+  if(!r) return;
+  document.getElementById('editReminderId').value = r.id;
+  document.getElementById('editReminderText').value = r.reminder_text || '';
+  document.getElementById('editReminderDate').value = r.due_date || '';
+  document.getElementById('editReminderModal').style.display = 'flex';
+}
+
+function closeEditReminderModal(){
+  document.getElementById('editReminderModal').style.display = 'none';
+}
+
+async function saveReminderEdit(){
+  const id = document.getElementById('editReminderId').value;
+  const text = document.getElementById('editReminderText').value.trim();
+  const date = document.getElementById('editReminderDate').value;
+  if(!text){
+    alert('Please enter a reminder.');
+    return;
+  }
+  const { error } = await sb.from('reminders')
+    .update({ reminder_text: text, due_date: date || null })
+    .eq('id', id);
+  if(error){ alert('Could not update reminder: ' + error.message); return; }
+  closeEditReminderModal();
+  await loadAllData();
+}
+
+async function deleteReminderFromEditModal(){
+  const id = document.getElementById('editReminderId').value;
+  if(!confirm('Delete this reminder?')) return;
+  const { error } = await sb.from('reminders').delete().eq('id', id);
+  if(error){ alert('Could not delete reminder: ' + error.message); return; }
+  closeEditReminderModal();
+  await loadAllData();
+}
+
+function connectEmail(provider){
+  alert(provider + ' connection is coming soon — this will link your inbox once Boss is connected to the backend.');
+}
+
+function updateStats(){
+  const totalMiles = trips.reduce((sum, t) => sum + Number(t.miles), 0);
+  const deduction = trips.reduce((sum, t) => sum + tripDeduction(t), 0);
+  document.getElementById('statMiles').textContent = totalMiles.toFixed(1);
+  document.getElementById('statDeduction').textContent = '$' + deduction.toFixed(2);
+  document.getElementById('statReceipts').textContent = receipts.length;
+}
+
+(function injectConnectIcons(){
+  const navGmailIcon = document.getElementById('navGmailIcon');
+  const navOutlookIcon = document.getElementById('navOutlookIcon');
+  const navOutlookEmailIcon = document.getElementById('navOutlookEmailIcon');
+  const navGoogleIcon = document.getElementById('navGoogleIcon');
+  if(navGmailIcon) navGmailIcon.innerHTML = gmailIconSvg(18);
+  if(navOutlookIcon) navOutlookIcon.innerHTML = outlookIconSvg(18);
+  if(navOutlookEmailIcon) navOutlookEmailIcon.innerHTML = outlookIconSvg(18);
+  if(navGoogleIcon) navGoogleIcon.innerHTML = googleCalIconSvg(18);
+})();
+
+function updateNavConnectDots(){
+  const outlookDot = document.getElementById('navOutlookDot');
+  const googleDot = document.getElementById('navGoogleDot');
+  if(outlookDot) outlookDot.style.display = msalInstance.getAllAccounts().length > 0 ? 'block' : 'none';
+  if(googleDot) googleDot.style.display = googleAccessToken ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
